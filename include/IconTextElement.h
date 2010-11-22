@@ -15,7 +15,7 @@ public:
     virtual int getHeight() const;
     virtual int getColor() const =0;
 
-    virtual void draw(HDC hdc, RECT &rt) const;
+    virtual void draw(HDC hdc, RECT &rt, bool znach) const;
 
     virtual void createContextMenu(HMENU) const;
     virtual void onCommand(int cmdId, ResourceContextRef rc);

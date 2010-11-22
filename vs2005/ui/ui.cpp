@@ -472,13 +472,13 @@ HRESULT AddNotification(HWND hWnd,LPCTSTR notmess,int flagvs)
 	sn.grfFlags = SHNF_FORCEMESSAGE;
 	if(flagvs==0){
 		sn.csDuration = 15;
-		sn.pszTitle = TEXT("Новое сообщение BombusQD");
+		sn.pszTitle = TEXT("Новое сообщение Bombusng MD");
 		sn.hicon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_MESS_IC));
 	}
 	
 	if(flagvs==1){
 		sn.csDuration = 3;
-		sn.pszTitle = TEXT("Уведомление BombusQD");
+		sn.pszTitle = TEXT("Уведомление Bombus MD");
 		sn.hicon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_BOMBUS));
 	}
 	sn.pszHTML = notmess;
@@ -602,7 +602,8 @@ ATOM MyRegisterClass(HINSTANCE hInstance, LPTSTR szWindowClass)
 //
 const std::string responseMd5Digest( const std::string &user, const std::string &pass, const std::string &realm, const std::string &digestUri, const std::string &nonce, const std::string cnonce);
 HBITMAP bmp_m;BITMAP bm_m;COLORREF transparentColor_m;
-
+//для бормоталки
+//HWND speech;
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     HWND hWnd;
@@ -629,7 +630,7 @@ if(hInst2){
 
     LoadString(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING); 
     LoadString(hInstance, IDC_UI, szWindowClass, MAX_LOADSTRING);
-
+    
     //If it is already running, then focus on the window, and exit
     hWnd = FindWindow(szWindowClass, szTitle);	
     if (hWnd) 
@@ -640,8 +641,9 @@ if(hInst2){
         SetForegroundWindow((HWND)((ULONG) hWnd | 0x00000001));
         return 0;
     } 
+//для бормоталки
+//	speech=FindWindow(L"Dialog",L"Bombus_s.txt");
 
-   
     wchar_t * skinRelPath;
 
 //
@@ -735,10 +737,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     PAINTSTRUCT ps;
     HDC hdc;
 WndRef chat2;int result;
-HMENU hMenu2;
+//HMENU hMenu2;
 int cmd2;
 RECT rcMenuBar;
-MENUITEMINFO mi;
+//MENUITEMINFO mi;
 HMENU hMenu = (HMENU)SHMenuBar_GetMenu(g_hWndMenuBar, 0);
     static SHACTIVATEINFO s_sai;
 	Serialize s(L"config\\status", Serialize::READ);
@@ -1626,10 +1628,46 @@ AddNotification(hwnvs,(LPCTSTR)messn1.c_str(),0);
 if (mucMessage) {if(Config::getInstance()->signals_muc)Notify::PlayNotify(1);}else{
 	soundjid=c->jid.getBareJid();
 			Notify::PlayNotify(0);}
-	}
+	//чтение голосом - переделать!!!
+//для бормоталки
+/*
+	if(speech ){
+std::wstring copy_sp;
+std::string copy =msg->body;
+copy_sp=utf8::utf8_wchar(copy);
+//копируем в буфер обмена 
+ // striping formating
+                size_t i=0;
+                while (i<copy_sp.length()) {
+                    if (copy_sp[i]<0x09) {
+                        copy_sp.erase(i,1);
+                        continue;
+                    }
+                    i++;
+                }
+                int dsize=sizeof(wchar_t)*(copy_sp.length()+1);
+                HANDLE hmem=LocalAlloc(LPTR, dsize);
+				if (hmem){
+                memcpy(hmem, copy_sp.c_str(), dsize);
 
+                if (OpenClipboard(NULL)) {
+                    EmptyClipboard(); //need to take ownership
+                    SetClipboardData(CF_UNICODETEXT, hmem);
+                    CloseClipboard();
+					PostMessage(speech, WM_COMMAND, 32795, 0);
+					Sleep(400);
+					PostMessage(speech, WM_COMMAND, 32838, 0);
+
+                } else LocalFree(hmem);
+				}
+
+
+	}*/
 }
 
+
+
+}
 
 
     ChatView *cv = dynamic_cast<ChatView *>(tabs->getWindowByODR(c).get());

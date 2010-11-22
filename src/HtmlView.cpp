@@ -93,7 +93,7 @@ LRESULT CALLBACK HtmlView::WndProc( HWND hWnd, UINT message, WPARAM wParam, LPAR
 
             SetBkMode(hdc, TRANSPARENT);
             SetTextColor(hdc, p->wt->getColor());
-            p->wt->draw(hdc, rc);
+            p->wt->draw(hdc, rc,0);
 
             skin->drawElement(hdc, icons::ICON_CLOSE, p->width-2-skin->getElementWidth(), 0);
 

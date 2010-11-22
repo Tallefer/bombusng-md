@@ -17,7 +17,7 @@ public:
         rt.right=rt.left+getWidth();
     }
 
-    virtual void draw(HDC hdc, RECT &rt) const=0;
+    virtual void draw(HDC hdc, RECT &rt, bool znach) const=0;
 
     virtual const wchar_t * getText() const =0;
 };

@@ -124,7 +124,7 @@ public:
     virtual bool showWindow(bool show);
 
     void redraw();
-
+	
 protected:
     VirtualListView::ref rosterListView;
 
@@ -144,6 +144,9 @@ public:
 
     typedef boost::shared_ptr<RosterListView> ref;
 
+	void Client_klik(Contact::ref focusedContact);
+	void Tune_klik(Contact::ref focusedContact);
+	virtual void is_icon_klik(int x);
     virtual HMENU getContextMenu();
     virtual void OnCommand(int cmdId, LONG lParam);
 

@@ -18,7 +18,7 @@ public:
     virtual int getColor() const;
 
     virtual void measure(HDC hdc, RECT &rt);
-    virtual void draw(HDC hdc, RECT &rt) const;
+    virtual void draw(HDC hdc, RECT &rt, bool znach) const;
 
     virtual void render(HDC hdc, RECT &rt, bool measure) const;
 
@@ -71,7 +71,7 @@ public:
 
     std::string getMessageText();
 
-    virtual void draw(HDC hdc, RECT &rt) const;
+    virtual void draw(HDC hdc, RECT &rt, bool znach) const;
 
     static PackedTime extractXDelay(JabberDataBlockRef stanza);
 };

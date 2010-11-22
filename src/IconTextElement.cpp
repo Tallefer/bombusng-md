@@ -26,7 +26,7 @@ void IconTextElement::init() {
     DeleteDC(tmp);
 }
 
-void IconTextElement::draw(HDC hdc, RECT &rt) const {
+void IconTextElement::draw(HDC hdc, RECT &rt, bool znach) const {
     //SetBkMode(hdc, TRANSPARENT);
     int iconIdx=getIconIndex();
 
@@ -35,7 +35,7 @@ void IconTextElement::draw(HDC hdc, RECT &rt) const {
     if (iconIdx>=0) {
         skin->drawElement(hdc, getIconIndex(), rt.left, rt.top);
 		rt.left+=skin->getElementWidth()+ICON_SPACING;
-		if(clientIcon>0){//добавляем иконку клиента
+		if(clientIcon>0 && znach){//добавляем иконку клиента
 			//skin->drawElement(hdc, clientIcon, (rt.left+skin->getElementWidth()), rt.top);
 			//rt.left+=skin->getElementWidth()+ICON_SPACING;
 			//skin->drawElement(hdc, clientIcon, (rt.right-skin->getElementWidth()), rt.top);
@@ -43,7 +43,7 @@ void IconTextElement::draw(HDC hdc, RECT &rt) const {
 			rt.right-=skin->getElementWidth()-ICON_SPACING;
 			
 		}
-		if(tuneicon>0)//иконка мелодии
+		if(tuneicon>0 && znach)//иконка мелодии
 		{rt.right-=skin->getElementWidth()-ICON_SPACING;}
 	} else rt.left+=1;
 
@@ -59,9 +59,9 @@ void IconTextElement::draw(HDC hdc, RECT &rt) const {
 	HFONT NormalFont  = CreateFontIndirectW(&FONT_ICON_TXT); 
 	SelectObject(hdc, NormalFont); 
     DrawText(hdc, getText(), -1, &rt, DT_LEFT | DT_TOP | DT_END_ELLIPSIS);
-	if(tuneicon>0){skin->drawElement(hdc, icons::ICON_TUNE, rtk2, rt.top);
+	if(tuneicon>0 && znach){skin->drawElement(hdc, icons::ICON_TUNE, rtk2, rt.top);
 	}
-	if(clientIcon>0){skin->drawElement(hdc, clientIcon, rtk, rt.top);}
+	if(clientIcon>0 && znach){skin->drawElement(hdc, clientIcon, rtk, rt.top);}
 	DeleteObject(NormalFont);
 }
 

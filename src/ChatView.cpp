@@ -1007,7 +1007,7 @@ void MessageElement::measure(HDC hdc, RECT &rt) {
 	height=rt.bottom-rt.top;
 }
 
-void MessageElement::draw(HDC hdc, RECT &rt) const {
+void MessageElement::draw(HDC hdc, RECT &rt, bool znach) const {
 	render(hdc, rt, false);
 }
 
@@ -1237,7 +1237,7 @@ bool MessageElement::OnMenuCommand(int cmdId, HWND parent, HWND edithwnd){
 				strurl2=wcstok(strurl2,L" \n;\,<>*\"\'\[\]\{\}");
 				strurl2[wcslen(strurl2)-1]='\0';
 				int result=MessageBox(GetParent(edithwnd), strurl2, TEXT("Открыть URL?"), MB_YESNOCANCEL | MB_ICONWARNING );
-<<<<<<< .mine
+
 			    	if (result==IDYES){
 				ExecFile(strurl2,L"");
 				delete[] strurl;
@@ -1247,17 +1247,7 @@ bool MessageElement::OnMenuCommand(int cmdId, HWND parent, HWND edithwnd){
 				delete[] strurl;
 				delete[] strurl2;
 				return true;}
-=======
-			    	if (result==IDYES){
-				ExecFile(strurl2,L"");
-				delete[] strurl;
-				delete[] strurl2;
-				return true;}
-					if (result==IDCANCEL){ 
-				delete[] strurl;
-				delete[] strurl2;
-				return true;}
->>>>>>> .r57
+
 				memset(strurl,20,2);
  //result=MessageBox(NULL, strurl, TEXT("Открыть URL?1"), MB_YESNO | MB_ICONWARNING );
 

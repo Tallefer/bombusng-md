@@ -99,7 +99,7 @@ std::string Message::getMessageText() {
     return r;
 }
 
-void Message::draw( HDC hdc, RECT &rt ) const{
-    MessageElement::draw(hdc, rt);
+void Message::draw(HDC hdc, RECT &rt, bool znach) const{
+    MessageElement::draw(hdc, rt,0);
     if (delivered) skin->drawElement(hdc, icons::ICON_DELIVERED_INDEX, rt.right-skin->getElementWidth()-2, rt.top );
 }

@@ -121,7 +121,7 @@ LRESULT CALLBACK VirtualListView::WndProc( HWND hWnd, UINT message, WPARAM wPara
                     ritem.right=p->clientRect.right; //full window-wide cursor
                     FillRect(hdc, &ritem, bkBrush);
                     DeleteObject(bkBrush);
-                    odr->draw(hdc, ritem);
+                    odr->draw(hdc, ritem,1);
                 }
             }
 
@@ -216,7 +216,7 @@ LRESULT CALLBACK VirtualListView::WndProc( HWND hWnd, UINT message, WPARAM wPara
             shrg.ptDown.y = HIWORD(lParam);
             shrg.dwFlags = SHRG_RETURNCMD /*| SHRG_NOANIMATION*/;
 
-            if (SHRecognizeGesture(&shrg) == GN_CONTEXTMENU) {
+			if (SHRecognizeGesture(&shrg) == GN_CONTEXTMENU) {
 
                 HMENU hmenu = p->getContextMenu();
 
@@ -241,7 +241,10 @@ LRESULT CALLBACK VirtualListView::WndProc( HWND hWnd, UINT message, WPARAM wPara
                     p->OnCommand(cmdId, NULL);
 
                 DestroyMenu(hmenu);
-            }
+			}else{
+			//нажатие на иконки
+				p->is_icon_klik(xmouse);
+			}
 			
             break;
         }
@@ -691,6 +694,7 @@ void VirtualListView::delODR(void ) {
 HMENU VirtualListView::getContextMenu() { return NULL; }
 void VirtualListView::OnCommand( int cmdId, LONG lParam ) {};
 
+void VirtualListView::is_icon_klik(int x){};
 void VirtualListView::setCursorPos( ODRRef newPos ) {
     if (!odrlist) return;
     cursorPos=newPos;

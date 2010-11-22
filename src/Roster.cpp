@@ -525,6 +525,87 @@ void RosterListView::eventOk() {
     }
 }
 
+extern ImgListRef skin;
+void RosterListView::Client_klik(Contact::ref focusedContact){
+	std::wstring msg2=utf8::utf8_wchar(focusedContact->getClientIdIcon());
+                    int result2=MessageBox(
+                        getHWnd(), 
+                        msg2.c_str(), 
+                        TEXT("Клиент"), 
+                        MB_OK);
+};
+
+void RosterListView::Tune_klik(Contact::ref focusedContact){
+//нажата нотка
+std::wstring msg2=L" артист:"+utf8::utf8_wchar(focusedContact->Tartist)+L" название:"+utf8::utf8_wchar(focusedContact->Ttitle)+L" альбом:"+utf8::utf8_wchar(focusedContact->Tsource);
+                    int result2=MessageBox(
+                        getHWnd(), 
+                        msg2.c_str(), 
+                        TEXT("Музыка"), 
+                        MB_OK);
+}
+
+void RosterListView::is_icon_klik(int x){//нажимаем на иконки в ростере
+IconTextElement::ref focused = boost::dynamic_pointer_cast<IconTextElement>(cursorPos);
+MucRoom * mr= dynamic_cast<MucRoom *>(cursorPos.get());	
+if (!cursorPos || !focused || mr) return ;
+Contact * c = dynamic_cast<Contact *>(cursorPos.get());
+Contact::ref focusedContact = boost::dynamic_pointer_cast<Contact>(cursorPos);
+
+if(c){
+	if(x>0 && x<(skin->getElementWidth()-1)){//нажата иконка статуса
+		
+		std::wstring msg1=L" ";
+		switch (focusedContact->status) 
+    {
+        case -1:msg1=L"PRESENCE_AUTH";
+		break;
+		case -2:msg1=L"PRESENCE_AUTH";
+		break;
+		case -3:msg1=L"PRESENCE_AUTH_REMOVE";
+		break;
+		case icons::ICON_INVISIBLE_INDEX : msg1=L"INVISIBLE";
+		break;
+		case icons::ICON_ERROR_INDEX : msg1=L"PRESENCE_ERROR";
+		break;
+		case icons::ICON_TRASHCAN_INDEX : msg1=L"TRASH";
+		break;
+		case presence::ONLINE:msg1=L"Online";
+		break;
+		case presence::CHAT:msg1=L"Free for chat";
+		break;
+		case presence::AWAY:msg1=L"Away";
+		break;
+		case presence::XA:msg1=L"Extended Away";
+		break;
+		case presence::DND:msg1=L"DND";
+		break;
+		case presence::OFFLINE:msg1=L"OFFLINE";
+		break;
+		case presence::ASK:msg1=L"ASK";
+		break;
+		case presence::UNKNOWN:msg1=L"UNKNOWN";
+		break;
+
+		}
+
+					std::wstring msg2=L"Статуc контакта "+utf8::utf8_wchar(focusedContact->getName())+ L" :\n"+msg1+L" \""+utf8::utf8_wchar(focusedContact->getStatusMessage())+L"\"";
+	int result2=MessageBox(
+                        getHWnd(), 
+                        msg2.c_str(), 
+                        TEXT("Cтатус"), 
+                        MB_OK);
+	}else 
+		if(x>(clientRect.right-skin->getElementWidth()+1)){
+			if(focusedContact->clientIcon){Client_klik(focusedContact);}
+			else if(focusedContact->tuneicon){Tune_klik(focusedContact);}
+		}
+		else 
+			if(x<(clientRect.right-skin->getElementWidth()) && x>(clientRect.right-2*skin->getElementWidth()+1)){
+			if(focusedContact->tuneicon){Tune_klik(focusedContact);}
+			} 
+}
+}
 HMENU RosterListView::getContextMenu() {
     if (!cursorPos) return NULL;
 
@@ -722,12 +803,7 @@ void RosterListView::OnCommand( int cmdId, LONG lParam ) {
                 break;
             }
 		case RosterListView::MUZYKA:
-			{std::wstring msg2=L" артист:"+utf8::utf8_wchar(focusedContact->Tartist)+L" название:"+utf8::utf8_wchar(focusedContact->Ttitle)+L" альбом:"+utf8::utf8_wchar(focusedContact->Tsource);
-                    int result2=MessageBox(
-                        getHWnd(), 
-                        msg2.c_str(), 
-                        TEXT("Музыка"), 
-                        MB_OK);
+			{Tune_klik(focusedContact);
 			break;}
         case RosterListView::LOGON: 
             //

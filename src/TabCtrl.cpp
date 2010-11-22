@@ -217,7 +217,7 @@ LRESULT CALLBACK TabsCtrl::WndProc( HWND hWnd, UINT message, WPARAM wParam, LPAR
             FillRect(di->hDC, &(di->rcItem), bgnd);
             DeleteObject(bgnd);
             ODR * odr=(ODR *)(di->itemData);
-            odr->draw(di->hDC, di->rcItem);
+            odr->draw(di->hDC, di->rcItem,0);
             return TRUE;
         }
 
@@ -332,7 +332,7 @@ void TabsCtrl::drawTab( HDC hdc, int offset, TabInfoRef tab, bool active ) {
     r.left+=2; r.right-=2; r.top+=1;
     const ODR * odr=tab->wndChild->getODR();
     if (odr) {
-        odr->draw(hdc, r);
+        odr->draw(hdc, r,0);
 	} else {
 		strcpy((char*)FONT_TABS.lfFaceName, "Tahoma"); 
 		FONT_TABS.lfHeight = 11; 

@@ -40,6 +40,7 @@ public:
     void addODR(ODRRef odr, bool redraw);
 
     virtual HMENU getContextMenu();
+	virtual void is_icon_klik(int x);
     virtual void OnCommand(int cmdId, LONG lParam);
 
     ODRRef getCursorPos() { return cursorPos; }
