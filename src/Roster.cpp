@@ -39,7 +39,10 @@
 extern TabsCtrlRef tabs;
 extern int socketError;
 char *NIL="Not-In-List";
-
+#include "mood.h"
+#include "activity.h"
+extern actParse  *actsParse;
+extern  moodParse *moodsParse;
 Roster::Roster(ResourceContextRef rc){
     roster=VirtualListView::ref();
     this->rc=rc;
@@ -76,6 +79,23 @@ Contact::ref Roster::findContact(const std::string &jid) const {
     return Contact::ref();
 }
 
+int Roster::actseticon(const std::string &from,int icon ,const std::string &mess){
+for (ContactList::const_iterator i=rc->roster->contacts.begin(); i!=rc->roster->contacts.end(); i++) {
+Contact::ref r=*i;
+if (r->rosterJid==from){
+	r->messact=mess;
+	r->acticon=icon;
+}}
+return 1;
+}
+int Roster::moodseticon(const std::string &from,int icon ,const std::string &mess){
+for (ContactList::const_iterator i=rc->roster->contacts.begin(); i!=rc->roster->contacts.end(); i++) {
+Contact::ref r=*i;
+if (r->rosterJid==from){
+	r->messmood=mess;
+	r->moodicon=icon;
+}}
+return 1;}
 int Roster::tuneon(const std::string &from,const std::string &artist,const std::string &title,const std::string &source){
 	//Jid right(from);
 for (ContactList::const_iterator i=rc->roster->contacts.begin(); i!=rc->roster->contacts.end(); i++) {
@@ -525,6 +545,8 @@ void RosterListView::eventOk() {
     }
 }
 
+
+
 extern ImgListRef skin;
 void RosterListView::Client_klik(Contact::ref focusedContact){
 	std::wstring msg2=utf8::utf8_wchar(focusedContact->getClientIdIcon());
@@ -532,6 +554,24 @@ void RosterListView::Client_klik(Contact::ref focusedContact){
                         getHWnd(), 
                         msg2.c_str(), 
                         TEXT("Клиент"), 
+                        MB_OK);
+};
+void RosterListView::Act_klik(Contact::ref focusedContact){
+	std::string  msg1=actsParse->lines[focusedContact->acticon+1][1];
+	std::wstring msg2=utf8::utf8_wchar(msg1)+L"\n\""+utf8::utf8_wchar(focusedContact->messact)+ L"\"";
+                    int result2=MessageBox(
+                        getHWnd(), 
+                        msg2.c_str(), 
+                        TEXT("Активность"), 
+                        MB_OK);
+};
+void RosterListView::Mood_klik(Contact::ref focusedContact){
+	std::string  msg1=moodsParse->lines[focusedContact->moodicon+1][1];
+	std::wstring msg2=utf8::utf8_wchar(msg1)+L"\n\""+utf8::utf8_wchar(focusedContact->messmood)+ L"\"";
+                    int result2=MessageBox(
+                        getHWnd(), 
+                        msg2.c_str(), 
+                        TEXT("Настроение"), 
                         MB_OK);
 };
 
@@ -595,17 +635,92 @@ if(c){
                         msg2.c_str(), 
                         TEXT("Cтатус"), 
                         MB_OK);
-	}else 
+	}else {//нажатие на иконки клиента,музыки,настроений,активности
+		int cl_bit=0;
+		if(focusedContact->clientIcon)cl_bit|=1;
+		if(focusedContact->tuneicon)  cl_bit|=2;
+		if(focusedContact->moodicon)  cl_bit|=4;
+		if(focusedContact->acticon)   cl_bit|=8;
 		if(x>(clientRect.right-skin->getElementWidth()+1)){
+			switch(cl_bit){
+				case 1:
+				case 3:
+				case 5:
+				case 7:
+				case 9:
+				case 11:
+				case 13:
+				case 15:
+					Client_klik(focusedContact);
+					break;
+				case 2:
+				case 6:
+				case 10:
+				case 14:
+					Tune_klik(focusedContact);
+					break;
+				case 4:
+				case 12:
+					Mood_klik(focusedContact);
+					break;
+				case 8:
+					Act_klik(focusedContact);
+					break;
+			}
+		}else
+			if(x<(clientRect.right-skin->getElementWidth()) && x>(clientRect.right-2*skin->getElementWidth()+1)){
+				switch(cl_bit){
+				case 3:
+				case 7:
+				case 11:
+				case 15:
+					Tune_klik(focusedContact);
+					break;
+				case 5:
+				case 6:
+				case 13:
+				case 14:
+					Mood_klik(focusedContact);
+					break;
+				case 9:
+				case 10:
+				case 12:
+					Act_klik(focusedContact);
+					break;
+
+				}
+		}else
+			if(x<(clientRect.right-2*skin->getElementWidth()) && x>(clientRect.right-3*skin->getElementWidth()+1)){
+				if(cl_bit== 7 || cl_bit==15)Mood_klik(focusedContact);
+				if(cl_bit== 11 || cl_bit==13 || cl_bit==14)Act_klik(focusedContact);
+			}
+			else if(x<(clientRect.right-3*skin->getElementWidth()) && x>(clientRect.right-4*skin->getElementWidth()+1)){
+			if(cl_bit==15)Act_klik(focusedContact);
+			}
+		
+		/*if(x>(clientRect.right-skin->getElementWidth()+1)){
 			if(focusedContact->clientIcon){Client_klik(focusedContact);}
 			else if(focusedContact->tuneicon){Tune_klik(focusedContact);}
+			else if(focusedContact->moodicon){Mood_klik(focusedContact);}
+			else if(focusedContact->acticon){Act_klik(focusedContact);}
 		}
 		else 
 			if(x<(clientRect.right-skin->getElementWidth()) && x>(clientRect.right-2*skin->getElementWidth()+1)){
-			if(focusedContact->tuneicon){Tune_klik(focusedContact);}
+			if(focusedContact->tuneicon && focusedContact->clientIcon){Tune_klik(focusedContact);}
+			else if(focusedContact->moodicon &&( focusedContact->tuneicon || focusedContact->clientIcon)){Mood_klik(focusedContact);}
+			else if(focusedContact->acticon && (focusedContact->moodicon || focusedContact->tuneicon || focusedContact->clientIcon)){Act_klik(focusedContact);}
 			} 
+			else
+				if(x<(clientRect.right-2*skin->getElementWidth()) && x>(clientRect.right-3*skin->getElementWidth()+1)){
+					if(focusedContact->moodicon && focusedContact->tuneicon && focusedContact->clientIcon){Mood_klik(focusedContact);}
+					else if(focusedContact->acticon ){Act_klik(focusedContact);}
+				}
+				else 
+					if(x<(clientRect.right-3*skin->getElementWidth()) && x>(clientRect.right-4*skin->getElementWidth()+1)){
+					if(focusedContact->acticon ){Act_klik(focusedContact);}
+					}*/
 }
-}
+}}
 HMENU RosterListView::getContextMenu() {
     if (!cursorPos) return NULL;
 

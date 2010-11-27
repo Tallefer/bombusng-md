@@ -79,6 +79,8 @@ public:
     void addGroup( RosterGroup::ref group );
     RosterGroup::ref findGroup(const std::string &name);
 	int tuneon(const std::string &jid,const std::string &artist,const std::string &title,const std::string &source) ;
+	int moodseticon(const std::string &from,int icon ,const std::string &mess);
+	int actseticon(const std::string &from,int icon ,const std::string &mess);
 	int tuneoff(const std::string &jid) ;
     RosterGroup::ref createGroup(const std::string &name, RosterGroup::Type type);
 
@@ -143,9 +145,10 @@ public:
     boost::weak_ptr<Roster> roster;
 
     typedef boost::shared_ptr<RosterListView> ref;
-
+	void Act_klik(Contact::ref focusedContact);
 	void Client_klik(Contact::ref focusedContact);
 	void Tune_klik(Contact::ref focusedContact);
+	void Mood_klik(Contact::ref focusedContact);
 	virtual void is_icon_klik(int x);
     virtual HMENU getContextMenu();
     virtual void OnCommand(int cmdId, LONG lParam);

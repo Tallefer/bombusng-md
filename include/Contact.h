@@ -48,6 +48,9 @@ public:
 
 	
 	std::string messtune;
+	std::string messmood;
+	std::string messact;
+    void setmood_icon(int i);
 
 
     int sortKey;

@@ -2,9 +2,11 @@
 #include <windows.h> 
 #include <Wingdi.h> 
 #include "config.h"
+#include "mood.h"
+#include "activity.h"
 extern ImgListRef skin;
-
-
+extern  moodParse *moodsParse;
+extern actParse  *actsParse;
 //////////////////////////////////////////////////////////////////////////
 // WARNING!!! ONLY FOR WM2003 and higher
 //////////////////////////////////////////////////////////////////////////
@@ -31,7 +33,9 @@ void IconTextElement::draw(HDC hdc, RECT &rt, bool znach) const {
     int iconIdx=getIconIndex();
 
 	LONG rtk=rt.right-skin->getElementWidth();
-	LONG rtk2=rt.right-skin->getElementWidth();
+	LONG rtk2=rtk;
+	LONG rtk3=rtk;
+	LONG rtk4=rtk;
     if (iconIdx>=0) {
         skin->drawElement(hdc, getIconIndex(), rt.left, rt.top);
 		rt.left+=skin->getElementWidth()+ICON_SPACING;
@@ -39,13 +43,29 @@ void IconTextElement::draw(HDC hdc, RECT &rt, bool znach) const {
 			//skin->drawElement(hdc, clientIcon, (rt.left+skin->getElementWidth()), rt.top);
 			//rt.left+=skin->getElementWidth()+ICON_SPACING;
 			//skin->drawElement(hdc, clientIcon, (rt.right-skin->getElementWidth()), rt.top);
-			rtk2=rt.right-2*skin->getElementWidth();
+			rtk4=rtk3=rtk2=rt.right-2*skin->getElementWidth();
+			
 			rt.right-=skin->getElementWidth()-ICON_SPACING;
 			
 		}
 		if(tuneicon>0 && znach)//иконка мелодии
-		{rt.right-=skin->getElementWidth()-ICON_SPACING;}
+		{rtk4=rtk3=rtk2-skin->getElementWidth();
+		rt.right-=skin->getElementWidth()-ICON_SPACING;
+		
+		}
+		if(moodicon>0 && znach)//иконка мелодии
+		{rtk4=rtk3-skin->getElementWidth();
+		rt.right-=skin->getElementWidth()-ICON_SPACING;
+		
+		}
+		if(acticon>0 && znach){
+			
+			rt.right-=skin->getElementWidth()-ICON_SPACING;}
+
+
 	} else rt.left+=1;
+
+	
 
 	strcpy((char*)FONT_ICON_TXT.lfFaceName, "Tahoma"); 
 	FONT_ICON_TXT.lfHeight = Config::getInstance()->roster_font_height; 
@@ -62,6 +82,11 @@ void IconTextElement::draw(HDC hdc, RECT &rt, bool znach) const {
 	if(tuneicon>0 && znach){skin->drawElement(hdc, icons::ICON_TUNE, rtk2, rt.top);
 	}
 	if(clientIcon>0 && znach){skin->drawElement(hdc, clientIcon, rtk, rt.top);}
+	//
+	if(moodicon>0 && znach){moodsParse->iconsMood->drawElement(hdc, moodicon, rtk3, rt.top);
+	}
+	if(acticon>0 && znach){actsParse->iconsact->drawElement(hdc, acticon, rtk4, rt.top);
+	}
 	DeleteObject(NormalFont);
 }
 

@@ -155,7 +155,10 @@ bool Contact::compareKT( Contact::ref left, Contact::ref right ) {
     if (l->sortKey > r->sortKey) return false;
     return (_wcsicmp(left->getText(), right->getText()) < 0);
 }
-
+void Contact::setmood_icon(int i){
+moodicon=i;
+ update();
+}
 void Contact::settuneon(){tuneicon=1; update();}
 void Contact::settuneoff(){tuneicon=0; update();}
 void Contact::update() {

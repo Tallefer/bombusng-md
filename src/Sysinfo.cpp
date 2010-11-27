@@ -24,7 +24,7 @@ const std::string sysinfo::getOsVersion() {
     if (osv.dwMajorVersion==4 && osv.dwMinorVersion<21) name="WindowsMobile 2003";
     if (osv.dwMajorVersion==4 && osv.dwMinorVersion>=21) name="WindowsMobile 2003 SE";
     if (osv.dwMajorVersion==5 && osv.dwMinorVersion==1) name="WindowsMobile 5";
-    if (osv.dwMajorVersion==5 && osv.dwMinorVersion==2) name="WindowsMobile 6/6.1";
+	if (osv.dwMajorVersion==5 && osv.dwMinorVersion==2) {if(osv.dwBuildNumber < 21234){name="WindowsMobile 6/6.1";}else name="WindowsMobile 6.5";}
 	LPMEMORYSTATUS lpBuffer;
 	lpBuffer->dwLength=sizeof(MEMORYSTATUS);
 	GlobalMemoryStatus( lpBuffer);

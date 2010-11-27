@@ -61,7 +61,8 @@
 #include "getconfig.h"
 #include "dnsquery.h"
 #include "boostheaders.h"
-
+#include "activity.h"
+#include "mood.h"
 #include "ChatView.h"
 #include "menu.h"
 char ***strcom;//массив быстрых команд
@@ -226,6 +227,8 @@ ResourceContextRef rc;
 HINSTANCE m_hInstanceDll;
 ImgListRef skin;
 ImgListRef ImgMenu;
+moodParse *moodsParse;
+actParse  *actsParse;
 SmileParser *smileParser;
 int smile_anim_ind=0;//номер кадра
 
@@ -1033,6 +1036,8 @@ HMENU hMenu = (HMENU)SHMenuBar_GetMenu(g_hWndMenuBar, 0);
             //skin=ImgListRef(new ImgArray(TEXT("skin.png"), 8, 6));
             skin=ImgListRef(new Skin(TEXT("")));
 			ImgMenu=ImgListRef(new ImgArray(L"menu.png", 8, -1));
+			moodsParse=new moodParse();
+			actsParse=new actParse();
             smileParser=new SmileParser();
             //skin->setGridSize(8, 6);
 
@@ -1367,7 +1372,7 @@ ProcessResult MessageRecv::blockArrived(JabberDataBlockRef block, const Resource
     std::string nick;
 
     bool mucMessage= block->getAttribute("type")=="groupchat";
-	bool tuneerror=	 block->getAttribute("type")=="error";//проверяем-на ошибку обработки сервером 
+	bool eerror=	 block->getAttribute("type")=="error";//проверяем-на ошибку обработки сервером 
     Contact::ref c;
     if (mucMessage) {
         Jid roomNode;
@@ -1385,14 +1390,83 @@ ProcessResult MessageRecv::blockArrived(JabberDataBlockRef block, const Resource
         c=rc->roster->getContactEntry(from);
         nick=c->getName();
     }
-	//tune
-	if(!tuneerror){
+	
+	if(!eerror){
+		
+		
+		
 JabberDataBlockRef zz=block->getChildByName("event");
 if(zz){//Log::getInstance()->msg("ok event");
 JabberDataBlockRef zzz=zz->getChildByName("items");
 if(zzz){//Log::getInstance()->msg("ok items");
 JabberDataBlockRef zzzz=zzz->getChildByName("item");
 if(zzzz){//Log::getInstance()->msg("ok item");
+
+//activ
+JabberDataBlockRef activity=zzzz->findChildNamespace("activity","http://jabber.org/protocol/activity");
+if(activity){
+JabberDataBlockRefList::iterator i=activity->getChilds()->begin();
+c->acticon=0;
+while (i!=activity->getChilds()->end()){
+JabberDataBlockRef childactivity=*(i++);
+//printf("\n childactivity teg : %s",childactivity->getTagName().c_str());
+if(childactivity->getTagName()=="text"){//c->messmood=childmood->getText();
+			c->messact=childactivity->getText();
+			printf("\n childactivity text %s- %s",childactivity->getText().c_str(),c->getFullName().c_str());
+}else{
+	JabberDataBlockRef ii=*(childactivity->getChilds()->begin());
+	std::string act_;
+	act_=childactivity->getTagName();
+		if(ii){
+			act_+="|"+ii->getTagName();
+			}
+for (int m=0; m<actsParse->linesCount; m++){
+					if(act_== actsParse->lines[m][0]){
+					c->acticon=m-1;
+					m=actsParse->linesCount;
+					}
+				}
+		printf("\n childactivity fullteg : %s",act_.c_str());
+	
+}
+}
+if(c->acticon>0){rc->roster->actseticon(from,c->acticon,c->messact);}
+	else {c->acticon=0;c->messact=" ";
+		rc->roster->actseticon(from,0,c->messact);}
+
+}
+
+
+//mood
+JabberDataBlockRef blockmood=zzzz->findChildNamespace("mood","http://jabber.org/protocol/mood");
+if(blockmood){
+	JabberDataBlockRefList::iterator i=blockmood->getChilds()->begin();
+	c->setmood_icon(0);
+	while (i!=blockmood->getChilds()->end()) {
+            JabberDataBlockRef childmood=*(i++);
+			
+			//printf("\n mood teg : %s",childmood->getTagName().c_str());
+			if(childmood->getTagName()=="text"){c->messmood=childmood->getText();
+			//printf("\n mood text %s- %s",c->messmood.c_str(),c->getFullName().c_str());
+			}else{
+				for (int m=0; m<moodsParse->linesCount; m++){
+					if(childmood->getTagName()== moodsParse->lines[m][0]){
+					c->setmood_icon(m-1);
+					m=moodsParse->linesCount;
+					}
+				}
+			
+			printf("\n mood icon =%d ",c->moodicon);
+			}
+	}
+	if(c->moodicon>0){rc->roster->moodseticon(from,c->moodicon,c->messmood);}
+	else {c->moodicon=0;c->messmood=" ";
+		rc->roster->moodseticon(from,0,c->messmood);}
+
+}
+	
+
+//tune
 JabberDataBlockRef blocktune=zzzz->findChildNamespace("tune","http://jabber.org/protocol/tune");
 if (blocktune) {
 

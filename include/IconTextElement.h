@@ -23,11 +23,14 @@ public:
     typedef boost::shared_ptr <IconTextElement> ref;
 	int clientIcon;
 	bool tuneicon;
-	
+	int moodicon;
+	int acticon;
 
 	IconTextElement::IconTextElement() { 
 	clientIcon = 0;
-	tuneicon=0;}
+	tuneicon = 0;
+	moodicon = 0;
+	acticon = 0;}
 protected:
     enum {
         ICON_SPACING=4

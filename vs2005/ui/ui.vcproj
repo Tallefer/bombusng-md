@@ -378,6 +378,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\..\src\activity.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\AdHocForm.cpp"
 				>
 			</File>
@@ -566,6 +570,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\mood.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\MRU.cpp"
 				>
 			</File>
@@ -687,6 +695,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\..\include\activity.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\include\AdHocForm.h"
 				>
@@ -893,6 +905,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\crypto\MessageDigest.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\mood.h"
 				>
 			</File>
 			<File

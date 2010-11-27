@@ -61,6 +61,6 @@ void colorsload(std::wstring txtname){
 	for ( int fff=0 ; fff<=24 ; fff++ ){
 		iii=fff*7;
 		COLORS[fff]=1048576*chartoint(colorch[iii])+65536*chartoint(colorch[iii+1])+4096*chartoint(colorch[iii+2])+256*chartoint(colorch[iii+3])+16*chartoint(colorch[iii+4])+chartoint(colorch[iii+5]);
-	printf("COLORS[%d] #%06X \n",fff,COLORS[fff]);
+//	printf("COLORS[%d] #%06X \n",fff,COLORS[fff]);
 	}
 }
