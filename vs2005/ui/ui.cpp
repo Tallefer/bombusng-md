@@ -1406,14 +1406,15 @@ if(zzzz){//Log::getInstance()->msg("ok item");
 JabberDataBlockRef activity=zzzz->findChildNamespace("activity","http://jabber.org/protocol/activity");
 if(activity){
 JabberDataBlockRefList::iterator i=activity->getChilds()->begin();
-c->acticon=0;
+c->acticon=-1;
 while (i!=activity->getChilds()->end()){
 JabberDataBlockRef childactivity=*(i++);
 //printf("\n childactivity teg : %s",childactivity->getTagName().c_str());
 if(childactivity->getTagName()=="text"){//c->messmood=childmood->getText();
 			c->messact=childactivity->getText();
-			printf("\n childactivity text %s- %s",childactivity->getText().c_str(),c->getFullName().c_str());
+			//printf("\n childactivity text %s- %s",childactivity->getText().c_str(),c->getFullName().c_str());
 }else{
+	if(childactivity->getChilds()){
 	JabberDataBlockRef ii=*(childactivity->getChilds()->begin());
 	std::string act_;
 	act_=childactivity->getTagName();
@@ -1426,13 +1427,13 @@ for (int m=0; m<actsParse->linesCount; m++){
 					m=actsParse->linesCount;
 					}
 				}
-		printf("\n childactivity fullteg : %s",act_.c_str());
-	
+		//printf("\n childactivity fullteg : %s",act_.c_str());
+	}
 }
 }
-if(c->acticon>0){rc->roster->actseticon(from,c->acticon,c->messact);}
-	else {c->acticon=0;c->messact=" ";
-		rc->roster->actseticon(from,0,c->messact);}
+if(c->acticon>=0){rc->roster->actseticon(from,c->acticon,c->messact);}
+	else {c->acticon=-1;c->messact=" ";
+		rc->roster->actseticon(from,-1,c->messact);}
 
 }
 
@@ -1441,7 +1442,7 @@ if(c->acticon>0){rc->roster->actseticon(from,c->acticon,c->messact);}
 JabberDataBlockRef blockmood=zzzz->findChildNamespace("mood","http://jabber.org/protocol/mood");
 if(blockmood){
 	JabberDataBlockRefList::iterator i=blockmood->getChilds()->begin();
-	c->setmood_icon(0);
+	c->setmood_icon(-1);
 	while (i!=blockmood->getChilds()->end()) {
             JabberDataBlockRef childmood=*(i++);
 			
@@ -1459,9 +1460,9 @@ if(blockmood){
 			printf("\n mood icon =%d ",c->moodicon);
 			}
 	}
-	if(c->moodicon>0){rc->roster->moodseticon(from,c->moodicon,c->messmood);}
-	else {c->moodicon=0;c->messmood=" ";
-		rc->roster->moodseticon(from,0,c->messmood);}
+	if(c->moodicon>=0){rc->roster->moodseticon(from,c->moodicon,c->messmood);}
+	else {c->moodicon=-1;c->messmood=" ";
+		rc->roster->moodseticon(from,-1,c->messmood);}
 
 }
 	

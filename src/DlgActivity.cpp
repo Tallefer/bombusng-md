@@ -99,7 +99,7 @@ publish->setAttribute("node", "http://jabber.org/protocol/activity");
 JabberDataBlockRef item=publish->addChild("item");
 JabberDataBlockRef mood=item->addChildNS("activity","http://jabber.org/protocol/activity");
 JabberDataBlockRef tegmood=mood->addChild(key,NULL);
-if(strcmp("other",val)!=0)JabberDataBlockRef tegact=tegmood->addChild(val,NULL);
+JabberDataBlockRef tegact=tegmood->addChild(val,NULL);
 JabberDataBlockRef text=mood->addChild("text",pmessage.c_str());
 
 p->rc->jabberStream->sendStanza(iq);

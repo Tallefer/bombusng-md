@@ -29,8 +29,8 @@ public:
 	IconTextElement::IconTextElement() { 
 	clientIcon = 0;
 	tuneicon = 0;
-	moodicon = 0;
-	acticon = 0;}
+	moodicon = -1;
+	acticon = -1;}
 protected:
     enum {
         ICON_SPACING=4

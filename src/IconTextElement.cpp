@@ -53,12 +53,12 @@ void IconTextElement::draw(HDC hdc, RECT &rt, bool znach) const {
 		rt.right-=skin->getElementWidth()-ICON_SPACING;
 		
 		}
-		if(moodicon>0 && znach)//иконка мелодии
+		if(moodicon>=0 && znach)//иконка мелодии
 		{rtk4=rtk3-skin->getElementWidth();
 		rt.right-=skin->getElementWidth()-ICON_SPACING;
 		
 		}
-		if(acticon>0 && znach){
+		if(acticon>=0 && znach){
 			
 			rt.right-=skin->getElementWidth()-ICON_SPACING;}
 
@@ -83,9 +83,9 @@ void IconTextElement::draw(HDC hdc, RECT &rt, bool znach) const {
 	}
 	if(clientIcon>0 && znach){skin->drawElement(hdc, clientIcon, rtk, rt.top);}
 	//
-	if(moodicon>0 && znach){moodsParse->iconsMood->drawElement(hdc, moodicon, rtk3, rt.top);
+	if(moodicon>=0 && znach){moodsParse->iconsMood->drawElement(hdc, moodicon, rtk3, rt.top);
 	}
-	if(acticon>0 && znach){actsParse->iconsact->drawElement(hdc, acticon, rtk4, rt.top);
+	if(acticon>=0 && znach){actsParse->iconsact->drawElement(hdc, acticon, rtk4, rt.top);
 	}
 	DeleteObject(NormalFont);
 }

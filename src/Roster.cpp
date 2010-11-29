@@ -639,8 +639,8 @@ if(c){
 		int cl_bit=0;
 		if(focusedContact->clientIcon)cl_bit|=1;
 		if(focusedContact->tuneicon)  cl_bit|=2;
-		if(focusedContact->moodicon)  cl_bit|=4;
-		if(focusedContact->acticon)   cl_bit|=8;
+		if(focusedContact->moodicon>=0)  cl_bit|=4;
+		if(focusedContact->acticon>=0)   cl_bit|=8;
 		if(x>(clientRect.right-skin->getElementWidth()+1)){
 			switch(cl_bit){
 				case 1:
