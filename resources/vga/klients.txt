@@ -36,3 +36,7 @@ http://rss2jabber.com/caps
 http://pyicqt.googlecode.com//protocol/caps
 svn.xmpp.ru/repos/mrim
 http://palringo.com/caps
+none
+http://vacuum-im.googlecode.com
+http://2010.qip.ru/caps
+http://trillian.im/caps

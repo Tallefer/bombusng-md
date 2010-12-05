@@ -29,12 +29,25 @@ BuildMax=0
 
 [SourceDisksFiles]
 "bombus.exe"=1
+"com.txt"=1
 "color.txt"=2
+"color-chornaya.txt"=2
+"color-krasnaya.txt"=2
+"color-seraya.txt"=2
+"color-sinyaya.txt"=2
+"color-zelyonaya.txt"=2
 "chess_1.PNG"=3
 "klients.png"=4
+"activ.png"=4
+"activity.txt"=4
+"menu1.png"=4
+"menu2.png"=4
+"menu.png"=4
 "klients.txt"=4
+"moods.png"=4
 "moods.txt"=4
 "skin.png"=4
+"skin2.png"=4
 "smiles.png"=4
 "smiles.txt"=4
 "aim.png"=5
@@ -47,6 +60,9 @@ BuildMax=0
 "composing.wav"=6
 "conference.wav"=6
 "connected.wav"=6
+"juick.wav"=6
+"mail.wav"=6
+"sounds.txt"=6
 "disconnected.wav"=6
 "message.wav"=6
 "reconnected.wav"=6
@@ -58,6 +74,7 @@ BuildMax=0
 
 [CopyFiles1]
 "bombus.exe",,,0x00000000
+"com.txt",,,0x00000000
 "news.txt",,,0x00000000
 "copying.txt",,,0x00000000
 "copying_rus.txt",,,0x00000000
@@ -65,15 +82,28 @@ BuildMax=0
 
 [CopyFiles2]
 "color.txt",,,0x00000000
+"color-krasnaya.txt",,,0x00000000
+"color-chornaya.txt",,,0x00000000
+"color-seraya.txt",,,0x00000000
+"color-sinyaya.txt",,,0x00000000
+"color-zelyonaya.txt",,,0x00000000
+
 
 [CopyFiles3]
 "chess_1.PNG",,,0x00000000
 
 [CopyFiles4]
+"activ.png",,,0x00000000
+"activity.txt",,,0x00000000
+"menu.png",,,0x00000000
+"menu1.png",,,0x00000000
+"menu2.png",,,0x00000000
 "klients.png",,,0x00000000
 "klients.txt",,,0x00000000
+"moods.png",,,0x00000000
 "moods.txt",,,0x00000000
 "skin.png",,,0x00000000
+"skin2.png",,,0x00000000
 "smiles.png",,,0x00000000
 "smiles.txt",,,0x00000000
 
@@ -93,6 +123,9 @@ BuildMax=0
 "disconnected.wav",,,0x00000000
 "message.wav",,,0x00000000
 "reconnected.wav",,,0x00000000
+"juick.wav",,,0x00000000
+"mail.wav",,,0x00000000
+"sounds.txt",,,0x00000000
 
 [CopyFiles7]
 "mrim.jabber.ru.jpg",,,0x00000000
@@ -108,7 +141,7 @@ CopyFiles4=0,"%InstallDir%\qvga"
 CopyFiles5=0,"%InstallDir%\qvga\transports"
 CopyFiles6=0,"%InstallDir%\sounds"
 CopyFiles7=0,"%InstallDir%\userdata\avatars"
-CEShortcuts1=0,"%CE13%"
+CEShortcuts1=0,"%CE11%"
 
 [DefaultInstall]
 CopyFiles=CopyFiles1,CopyFiles2,CopyFiles3,CopyFiles4,CopyFiles5,CopyFiles6,CopyFiles7

@@ -1,1 +1,4 @@
-﻿fuze@jabbim = conference.wav
+juick@juick.com = juick.wav
+mrim.sudouser.ru = mail.wav
+
+

@@ -1,0 +1,2 @@
+ffffff ffffff ffffff ffffff ffffff 000000 000000 000000 ffffff 585858 2a2a2a 0d0d0d 000000 ffffff ffffff ffffff ffffff ff0000 003a0f 64ffff 1010ff c8c8c8 ff6498 000000 00c800
+1-online 2-chat 3-away 4-xa 5-dnd 9- focused item SetTextColor 10,11-bkColor=(GetFocus()==hWnd)?:; 12,13-bkColor= (oddIndex)?,Notification:14-muccolorbg ,15-mucjid,16-muccolormess ,17-colorbg,18-jid,19-mess

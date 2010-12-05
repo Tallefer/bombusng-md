@@ -64,7 +64,7 @@ void DialogAccountMP(HINSTANCE g_hInst, HWND parent, JabberAccountRef accnt) {
     pages[0].pfnDlgProc=DlgProcAccountP1;
     pages[1].pfnDlgProc=DlgProcAccountP2;
     pages[2].pfnDlgProc=DlgProcAccountP3;
-	pages[3].pfnDlgProc=DlgProcAccountP3;
+	pages[3].pfnDlgProc=DlgProcAccountP4;
 
     pages[0].lParam=0;
     pages[1].lParam=1;
