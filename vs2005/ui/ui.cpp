@@ -1415,12 +1415,18 @@ if(childactivity->getTagName()=="text"){//c->messmood=childmood->getText();
 			//printf("\n childactivity text %s- %s",childactivity->getText().c_str(),c->getFullName().c_str());
 }else{
 	if(childactivity->getChilds()){
-	JabberDataBlockRef ii=*(childactivity->getChilds()->begin());
+	/*JabberDataBlockRef ii=*(childactivity->getChilds()->begin());
 	std::string act_;
 	act_=childactivity->getTagName();
-		if(ii){
+	if(ii->getTagName().length()>2){
 			act_+="|"+ii->getTagName();
-			}
+		}else{act_+="|other";}*/
+		JabberDataBlockRefList::iterator ii=childactivity->getChilds()->begin();
+std::string act_;
+act_=childactivity->getTagName();
+if(ii != childactivity->getChilds()->end()){
+act_+="|"+(*ii)->getTagName();
+}else{act_+="|other";}
 for (int m=0; m<actsParse->linesCount; m++){
 					if(act_== actsParse->lines[m][0]){
 					c->acticon=m-1;
