@@ -327,38 +327,35 @@ LRESULT CALLBACK VirtualListView::WndProc( HWND hWnd, UINT message, WPARAM wPara
           int vKey=(int)wParam;
             int lkeyData=lParam;
             if (lkeyData & 0x80000000) break; //keyRelease 
-            switch (vKey) {
-                        /* UFO START */
-						case VK_5:{ODRRef focused=p->cursorPos;
-           if (!(focused)) break;
-            InvalidateRect(p->getHWnd(), NULL, true);
-			
-            
+            switch (vKey)
+			{
+				/* UFO START */
+				case VK_5:
+				{
+					ODRRef focused=p->cursorPos;
+					if (!(focused)) break;
+					InvalidateRect(p->getHWnd(), NULL, true);
+					HMENU hmenu = p->getContextMenu();
+					VirtualListElement *velement=dynamic_cast<VirtualListElement *>(focused.get());
+					if (velement) hmenu=velement->getContextMenu(hmenu);
+					if (hmenu==NULL) break;
+					POINT pt={LOWORD(lParam), HIWORD(lParam) };
+					ClientToScreen(hWnd, &pt);
+					int cmdId=TrackPopupMenuEx(hmenu,
+						/*TPM_LEFTALIGN |*/ TPM_TOPALIGN | TPM_RETURNCMD, 
+						pt.x, pt.y,
+						hWnd,
+						NULL);
 
-                HMENU hmenu = p->getContextMenu();
+					bool cmdProcessed=false;
+					if (velement) 
+						cmdProcessed=velement->OnMenuCommand(cmdId, p->getHWnd(), p->hEditBox);
 
-                VirtualListElement *velement=dynamic_cast<VirtualListElement *>(focused.get());
-                if (velement) hmenu=velement->getContextMenu(hmenu);
+					if (!cmdProcessed)
+						p->OnCommand(cmdId, NULL);
 
-                if (hmenu==NULL) break;
-
-                POINT pt={LOWORD(lParam), HIWORD(lParam) };
-                ClientToScreen(hWnd, &pt);
-                int cmdId=TrackPopupMenuEx(hmenu,
-                    /*TPM_LEFTALIGN |*/ TPM_TOPALIGN | TPM_RETURNCMD, 
-                    pt.x, pt.y,
-                    hWnd,
-                    NULL);
-
-                bool cmdProcessed=false;
-                if (velement) 
-					cmdProcessed=velement->OnMenuCommand(cmdId, p->getHWnd(), p->hEditBox);
-
-                if (!cmdProcessed)
-                    p->OnCommand(cmdId, NULL);
-
-                DestroyMenu(hmenu); break;
-							}
+					DestroyMenu(hmenu); break;
+				}
 
                         case VK_RIGHT:
                                 PostMessage(tabs->getHWnd(), WM_COMMAND, TabsCtrl::NEXTTAB, 0);
@@ -444,6 +441,40 @@ LRESULT CALLBACK VirtualListView::WndProc( HWND hWnd, UINT message, WPARAM wPara
                 break;
 
                 case VK_RETURN:
+					SHRGINFO    shrg;
+					shrg.cbSize = sizeof(shrg);
+					shrg.hwndClient = hWnd;
+					shrg.ptDown.x = LOWORD(lParam);
+					shrg.ptDown.y = HIWORD(lParam);
+					shrg.dwFlags = SHRG_RETURNCMD | SHRG_NOANIMATION;
+
+					if (SHRecognizeGesture(&shrg) == GN_CONTEXTMENU)
+					{
+						ODRRef focused=p->cursorPos;
+						if (!(focused)) break;
+						InvalidateRect(p->getHWnd(), NULL, true);
+						HMENU hmenu = p->getContextMenu();
+						VirtualListElement *velement=dynamic_cast<VirtualListElement *>(focused.get());
+						if (velement) hmenu=velement->getContextMenu(hmenu);
+						if (hmenu==NULL) break;
+						POINT pt={LOWORD(lParam), HIWORD(lParam) };
+						ClientToScreen(hWnd, &pt);
+						int cmdId=TrackPopupMenuEx(hmenu,
+							/*TPM_LEFTALIGN |*/ TPM_TOPALIGN | TPM_RETURNCMD, 
+							pt.x, pt.y,
+							hWnd,
+							NULL);
+
+						bool cmdProcessed=false;
+						if (velement) 
+							cmdProcessed=velement->OnMenuCommand(cmdId, p->getHWnd(), p->hEditBox);
+
+						if (!cmdProcessed)
+							p->OnCommand(cmdId, NULL);
+
+						DestroyMenu(hmenu);
+						break;
+					}
 					if (lkeyData &0xc0000000) break;
 					p->eventOk();
 				break;

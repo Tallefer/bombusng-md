@@ -42,6 +42,17 @@ INT_PTR CALLBACK DlgMucJoin::dialogProc(HWND hDlg, UINT message, WPARAM wParam, 
 			shidi.hDlg = hDlg;
 			SHInitDialog(&shidi);
 
+			// MenuBar
+			SHMENUBARINFO mbi;
+			memset ( &mbi, 0, sizeof ( mbi ) );
+			mbi.cbSize = sizeof ( mbi );
+			mbi.hwndParent = hDlg;
+			mbi.nToolBarId = IDR_MENU_OK_CANCEL;
+			mbi.hInstRes = g_hInst;
+			mbi.dwFlags |= SHCMBF_HMENU;
+			SHCreateMenuBar ( &mbi );
+
+
             SetDlgItemText(hDlg, IDC_E_ROOM, p->jid.getUserName());
             SetDlgItemText(hDlg, IDC_E_SERVER, p->jid.getServer());
             SetDlgItemText(hDlg, IDC_E_PASSWORD, p->pass);

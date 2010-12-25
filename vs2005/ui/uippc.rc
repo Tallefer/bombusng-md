@@ -15,7 +15,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Russian resources
+// русский resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
 #ifdef _WIN32
@@ -35,12 +35,12 @@ BEGIN
         MENUITEM "Статус",                      IDM_JABBER_STATUS
         POPUP "Быстро статус"
         BEGIN
-            MENUITEM "On line",                     IDM_STATUS_ONLINE
-            MENUITEM "FFC",                         IDM_STATUS_FFC
-            MENUITEM "Away",                        IDM_STATUS_AWAY
-            MENUITEM "Extended Away",               IDM_STATUS_EXTENDEDAWAY
-            MENUITEM "DND",                         IDM_STATUS_DND
-            MENUITEM "Off line",                    IDM_STATUS_OFFLINE
+            MENUITEM "В сети",                      IDM_STATUS_ONLINE
+            MENUITEM "Готов болтать",               IDM_STATUS_FFC
+            MENUITEM "Отошел",                      IDM_STATUS_AWAY
+            MENUITEM "Недоступен",                  IDM_STATUS_EXTENDEDAWAY
+            MENUITEM "Не беспокоить",               IDM_STATUS_DND
+            MENUITEM "Не в сети",                   IDM_STATUS_OFFLINE
         END
         POPUP "PEP"
         BEGIN
@@ -64,9 +64,9 @@ BEGIN
         MENUITEM SEPARATOR
         POPUP "Сигналы"
         BEGIN
-            MENUITEM "Звук+Вибра",                  ID_SIGNALS_SOUNDANDVIBRA
+            MENUITEM "Звук и Вибрация",             ID_SIGNALS_SOUNDANDVIBRA, CHECKED
             MENUITEM "Звук",                        ID_SIGNALS_SOUND
-            MENUITEM "Вибра",                       ID_SIGNALS_VIBRA
+            MENUITEM "Вибрация",                    ID_SIGNALS_VIBRA
             MENUITEM "Отключить",                   ID_SIGNALS_MUTE
         END
         MENUITEM "Настройки",                   ID_JABBER_OPTIONS
@@ -88,6 +88,12 @@ IDR_MENU1 MENU
 BEGIN
     MENUITEM "Меню",                        ID_MENU_1
     MENUITEM "Окна",                        IDS_WINDOWS
+END
+
+IDR_MENU_OK_CANCEL MENU 
+BEGIN
+    MENUITEM "Готово",                      IDOK
+    MENUITEM "Отмена",                      IDCANCEL
 END
 
 
@@ -139,8 +145,6 @@ BEGIN
     EDITTEXT        IDC_E_PRIORITY,49,87,29,12,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "",IDC_SPIN_PRIORITY,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,83,86,11,14
     CONTROL         "Globas status",GLOBAL_STATUS,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,7,103,60,14
-    DEFPUSHBUTTON   "Ок",IDOK,24,117,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,84,117,50,14
     COMBOBOX        IDC_C_PRESET,33,22,76,38,CBS_DROPDOWN | CBS_SORT | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
     CONTROL         "Save",IDC_X_PRESAVE,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,117,24,32,10
     LTEXT           "Приоритет",-1,7,89,37,8
@@ -159,8 +163,6 @@ BEGIN
     EDITTEXT        IDC_E_STATUS,7,58,142,24,ES_MULTILINE | ES_AUTOHSCROLL | WS_VSCROLL
     EDITTEXT        IDC_E_PRIORITY,49,87,29,12,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "",IDC_SPIN_PRIORITY,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,83,86,11,14
-    DEFPUSHBUTTON   "Ок",IDOK,24,108,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,84,108,50,14
     COMBOBOX        IDC_C_PRESET,33,40,76,38,CBS_DROPDOWN | CBS_SORT | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
     CONTROL         "Save",IDC_X_PRESAVE,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,117,41,32,10
     LTEXT           "Приоритет",-1,7,89,40,8
@@ -179,8 +181,6 @@ BEGIN
     EDITTEXT        IDC_E_NICK,37,41,77,13,ES_AUTOHSCROLL
     PUSHBUTTON      "Resolve",ID_VCARD_NICK,117,41,35,13
     COMBOBOX        IDC_C_GROUP,37,58,115,57,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON   "Обновить",IDOK,24,95,50,14,WS_GROUP
-    PUSHBUTTON      "Отмена",IDCANCEL,84,95,50,14
     EDITTEXT        IDC_E_JID,37,7,77,13,ES_LOWERCASE | ES_AUTOHSCROLL | ES_READONLY
     PUSHBUTTON      "VCard",ID_VCARD,117,7,35,13,WS_DISABLED
     LTEXT           "Контакт",-1,5,9,32,8
@@ -200,8 +200,6 @@ BEGIN
     COMBOBOX        IDC_C_NICK,7,39,62,71,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_E_SERVER,68,13,81,12,ES_LOWERCASE | ES_AUTOHSCROLL
     EDITTEXT        IDC_E_PASSWORD,83,38,66,12,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "Войти",IDOK,24,112,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,84,112,50,14
     EDITTEXT        IDC_E_HISTSZ,119,55,29,12,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "",IDC_SPIN_HIST_SZ,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,109,54,11,14
     PUSHBUTTON      "Сохр.",IDC_SAVE,102,81,42,11
@@ -228,8 +226,6 @@ BEGIN
     PUSHBUTTON      "Запрос",ID_VCARD_NICK,117,41,35,13
     COMBOBOX        IDC_C_GROUP,37,58,115,57,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     CONTROL         "Подписка",IDC_X_SUBSCR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,78,94,10
-    DEFPUSHBUTTON   "Добавить",IDOK,24,95,50,14,WS_GROUP
-    PUSHBUTTON      "Отмена",IDCANCEL,84,95,50,14
     PUSHBUTTON      "VCard",ID_VCARD,117,7,35,13,WS_DISABLED
     COMBOBOX        IDC_C_SERVICE,37,24,115,52,CBS_DROPDOWNLIST | CBS_LOWERCASE | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Контакт",-1,5,9,32,8
@@ -282,17 +278,17 @@ FONT 8, "MS Shell Dlg"
 BEGIN
     CONTROL         "Показ групп",IDC_X_GROUPS,"Button",BS_AUTOCHECKBOX | BS_NOTIFY | WS_TABSTOP,11,17,57,10
     CONTROL         "Показ offline контактов",IDC_X_OFFLINES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,7,96,10
-    LTEXT           "Размер аватарок",IDC_STATIC,11,44,69,10
+    LTEXT           "Размер аватарок",-1,11,44,69,10
     EDITTEXT        IDC_X_AWAT,87,42,18,12,ES_LOWERCASE | ES_AUTOHSCROLL
     CONTROL         "Показ клиентов",IDC_AUTOJOINROOM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,31,70,10
     CONTROL         "Лог",IDC_XML_LOG3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,67,28,10
-    LTEXT           "Порт вибры",IDC_STATIC,11,56,69,10
+    LTEXT           "Порт вибры",-1,11,56,69,10
     EDITTEXT        IDC_VIBRA,87,55,18,12,ES_LOWERCASE | ES_AUTOHSCROLL
     PUSHBUTTON      "Авто",IDC_GETVIBRA,107,54,45,14
     CONTROL         "Автовход в комнату",IDC_AUTOJOINROOM2,"Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,11,77,135,12
     CONTROL         "Показывать доп.инфу о клиенте",IDC_DOPINFA,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,89,135,12
     COMBOBOX        IDC_LISTCOLORS,37,101,115,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Цвета",IDC_STATIC,11,103,22,8
+    LTEXT           "Цвета",-1,11,103,22,8
     CONTROL         "XML ",IDC_XML_LOG2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,53,68,31,10
 END
 
@@ -376,13 +372,10 @@ BEGIN
 END
 
 IDD_LOC_CONTACT DIALOG  0, 0, 155, 122
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
 CAPTION "Dialog"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    DEFPUSHBUTTON   "Отмена",IDOK3,100,101,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,100,101,50,14
-    DEFPUSHBUTTON   "OK",IDOK,7,101,50,14
     EDITTEXT        IDC_E_JID2,73,7,77,13,ES_LOWERCASE | ES_AUTOHSCROLL | ES_READONLY
     LTEXT           "Контакт",-1,7,9,32,11
     EDITTEXT        IDC_E_SHIR,73,27,77,13,ES_AUTOHSCROLL
@@ -393,7 +386,7 @@ BEGIN
 END
 
 IDD_STATUSY DIALOG  0, 0, 156, 129
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
 CAPTION "Статусы"
 FONT 8, "MS Shell Dlg"
 BEGIN
@@ -414,13 +407,10 @@ BEGIN
 END
 
 IDD_MOODS DIALOG  0, 0, 155, 122
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
 CAPTION "Настроение"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    DEFPUSHBUTTON   "Отмена",IDOK3,100,101,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,100,101,50,14
-    DEFPUSHBUTTON   "OK",IDOK,7,101,50,14
     LTEXT           "Выбор",-1,7,15,32,11
     EDITTEXT        IDC_MES_MOODS,7,67,143,24,ES_AUTOHSCROLL
     COMBOBOX        IDC_MOODS,48,13,102,71,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
@@ -448,13 +438,10 @@ BEGIN
 END
 
 IDD_ACTIVITY DIALOG  0, 0, 155, 122
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
 CAPTION "Активность"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    DEFPUSHBUTTON   "Отмена",IDOK_3,100,101,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,100,101,50,14
-    DEFPUSHBUTTON   "OK",IDOK_1,7,101,50,14
     LTEXT           "Выбор",-1,7,15,32,11
     EDITTEXT        IDC_MES_ACTIV,7,67,143,24,ES_AUTOHSCROLL
     COMBOBOX        IDC_ACTIV,48,13,102,71,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
@@ -476,262 +463,13 @@ BEGIN
     LTEXT           "Ширина Сообщений",-1,12,85,70,9
 END
 
-IDD_CANSEL DIALOG  0, 0, 156, 129
+IDD_OPEN_URL DIALOG  0, 0, 137, 186
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
-EXSTYLE 0x80000000L
-CAPTION "Закрыть"
+CAPTION "Открыть URL"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    PUSHBUTTON      "Отмена",ID_CANSEL,84,48,54,24
-    PUSHBUTTON      "OK",ID_OK,12,48,53,24
+    LISTBOX         IDC_URL_LIST,7,7,123,172,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
 END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
-BEGIN
-    IDD_ABOUTBOX, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 149
-        TOPMARGIN, 7
-        HORZGUIDE, 56
-        HORZGUIDE, 69
-        HORZGUIDE, 73
-        HORZGUIDE, 82
-        HORZGUIDE, 94
-        HORZGUIDE, 104
-    END
-
-    IDD_STATUS, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 149
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 117
-    END
-
-    IDD_DIRECT_PRESENCE, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 149
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 122
-    END
-
-    IDD_EDIT_CONTACT, DIALOG
-    BEGIN
-        LEFTMARGIN, 4
-        RIGHTMARGIN, 152
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 115
-    END
-
-    IDD_CONFERENCE, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 149
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 122
-    END
-
-    IDD_ADD_CONTACT, DIALOG
-    BEGIN
-        LEFTMARGIN, 4
-        RIGHTMARGIN, 152
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 115
-    END
-
-    IDD_ACCNT1, DIALOG
-    BEGIN
-        LEFTMARGIN, 4
-        RIGHTMARGIN, 152
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 122
-    END
-
-    IDD_ACCNT2, DIALOG
-    BEGIN
-        LEFTMARGIN, 4
-        RIGHTMARGIN, 152
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 121
-    END
-
-    IDD_OPTIONS1, DIALOG
-    BEGIN
-        LEFTMARGIN, 4
-        RIGHTMARGIN, 152
-        VERTGUIDE, 11
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 125
-        HORZGUIDE, 68
-        HORZGUIDE, 77
-        HORZGUIDE, 89
-        HORZGUIDE, 122
-    END
-
-    IDD_OPTIONS2, DIALOG
-    BEGIN
-        LEFTMARGIN, 4
-        RIGHTMARGIN, 152
-        VERTGUIDE, 11
-        VERTGUIDE, 90
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 127
-        HORZGUIDE, 39
-        HORZGUIDE, 53
-        HORZGUIDE, 54
-        HORZGUIDE, 127
-    END
-
-    IDD_OPTIONS3, DIALOG
-    BEGIN
-        LEFTMARGIN, 4
-        RIGHTMARGIN, 152
-        VERTGUIDE, 11
-        VERTGUIDE, 20
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 126
-        HORZGUIDE, 16
-        HORZGUIDE, 26
-    END
-
-    IDD_ACCNT3, DIALOG
-    BEGIN
-        LEFTMARGIN, 4
-        RIGHTMARGIN, 152
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 122
-    END
-
-    IDD_OPTIONS4, DIALOG
-    BEGIN
-        LEFTMARGIN, 4
-        RIGHTMARGIN, 152
-        VERTGUIDE, 12
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 122
-        HORZGUIDE, 19
-        HORZGUIDE, 30
-        HORZGUIDE, 35
-    END
-
-    IDD_LOC_CONTACT, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 150
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 115
-        HORZGUIDE, 20
-        HORZGUIDE, 40
-        HORZGUIDE, 60
-    END
-
-    IDD_STATUSY, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 149
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 128
-        HORZGUIDE, 116
-    END
-
-    IDD_MOODS, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 150
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 115
-        HORZGUIDE, 26
-    END
-
-    IDD_BLAGO, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 149
-        VERTGUIDE, 17
-        VERTGUIDE, 138
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 121
-        HORZGUIDE, 18
-        HORZGUIDE, 30
-        HORZGUIDE, 36
-        HORZGUIDE, 48
-        HORZGUIDE, 54
-        HORZGUIDE, 66
-        HORZGUIDE, 72
-        HORZGUIDE, 84
-        HORZGUIDE, 121
-    END
-
-    IDD_HISTOR, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 149
-        VERTGUIDE, 17
-        VERTGUIDE, 138
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 121
-        HORZGUIDE, 18
-        HORZGUIDE, 30
-        HORZGUIDE, 36
-        HORZGUIDE, 48
-        HORZGUIDE, 54
-        HORZGUIDE, 66
-        HORZGUIDE, 72
-        HORZGUIDE, 110
-        HORZGUIDE, 121
-    END
-
-    IDD_ACTIVITY, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 150
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 115
-        HORZGUIDE, 26
-    END
-
-    IDD_OPTIONS5, DIALOG
-    BEGIN
-        LEFTMARGIN, 4
-        RIGHTMARGIN, 152
-        VERTGUIDE, 12
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 122
-        HORZGUIDE, 19
-        HORZGUIDE, 30
-        HORZGUIDE, 35
-    END
-
-    IDD_CANSEL, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 149
-        VERTGUIDE, 12
-        VERTGUIDE, 65
-        VERTGUIDE, 84
-        VERTGUIDE, 138
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 121
-        HORZGUIDE, 30
-        HORZGUIDE, 36
-        HORZGUIDE, 48
-        HORZGUIDE, 54
-        HORZGUIDE, 66
-        HORZGUIDE, 72
-        HORZGUIDE, 110
-        HORZGUIDE, 121
-    END
-END
-#endif    // APSTUDIO_INVOKED
 
 
 #ifdef APSTUDIO_INVOKED
@@ -780,6 +518,25 @@ IDI_ICON1               ICON                    "icon1.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_OPEN_URL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 130
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 179
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // String Table
 //
 
@@ -798,7 +555,7 @@ BEGIN
     IDS_SEND                "Send"
 END
 
-#endif    // Russian resources
+#endif    // русский resources
 /////////////////////////////////////////////////////////////////////////////
 
 

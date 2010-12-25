@@ -95,6 +95,17 @@ INT_PTR CALLBACK DlgAddEditContact::dialogProc(HWND hDlg, UINT message, WPARAM w
 			shidi.hDlg = hDlg;
 			SHInitDialog(&shidi);
 
+			// MenuBar
+			SHMENUBARINFO mbi;
+			memset ( &mbi, 0, sizeof ( mbi ) );
+			mbi.cbSize = sizeof ( mbi );
+			mbi.hwndParent = hDlg;
+			mbi.nToolBarId = IDR_MENU_OK_CANCEL;
+			mbi.hInstRes = g_hInst;
+			mbi.dwFlags |= SHCMBF_HMENU;
+			SHCreateMenuBar ( &mbi );
+
+
             if (p->contact) { 
                 SetDlgItemText(hDlg, IDC_E_JID, p->contact->rosterJid);
                 SetDlgItemText(hDlg, IDC_E_NICK, p->contact->nickname);

@@ -20,11 +20,12 @@
 extern bool menu_font_is_f;
 extern std::wstring appRootPath;
 extern void colorsload(std::wstring txtname);
+extern HINSTANCE	g_hInst;			// current instance
 
 //////////////////////////////////////////////////////////////////////////////////
 wchar_t *statusNames2 []= { TEXT(" "),
-    TEXT("Online"),         TEXT("Free for chat"),  TEXT("Away"), 
-    TEXT("Extended Away"),  TEXT("DND"),            TEXT("Offline") 
+    TEXT("В сети"),         TEXT("Готов болтать"),  TEXT("Отошел"), 
+    TEXT("Недоступен"),  TEXT("Не беспокоить"),            TEXT("Не в сети") 
 };
 
 INT_PTR CALLBACK DlgProcConfig(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam, int npage);
@@ -47,19 +48,16 @@ INT_PTR CALLBACK DlgProcConfigP5(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
 INT_PTR CALLBACK DlgProcConfigP6(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
     return DlgProcConfig(hDlg, message, wParam, lParam, 5);
 }
-INT_PTR CALLBACK DlgProcConfigP7(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
-    return DlgProcConfig(hDlg, message, wParam, lParam, 6);
-}
+
 void DialogConfigMP(HINSTANCE g_hInst, HWND parent) {
 
-    PROPSHEETPAGE pages[7];
+    PROPSHEETPAGE pages[6];
     pages[0].dwSize=sizeof(PROPSHEETPAGE);
     pages[1].dwSize=sizeof(PROPSHEETPAGE);
     pages[2].dwSize=sizeof(PROPSHEETPAGE);
     pages[3].dwSize=sizeof(PROPSHEETPAGE);
 	pages[4].dwSize=sizeof(PROPSHEETPAGE);
 	pages[5].dwSize=sizeof(PROPSHEETPAGE);
-	pages[6].dwSize=sizeof(PROPSHEETPAGE);
 
     pages[0].hInstance=g_hInst;
     pages[1].hInstance=g_hInst;
@@ -67,7 +65,6 @@ void DialogConfigMP(HINSTANCE g_hInst, HWND parent) {
     pages[3].hInstance=g_hInst;
     pages[4].hInstance=g_hInst;
 	pages[5].hInstance=g_hInst;
-	pages[6].hInstance=g_hInst;
 
     pages[0].dwFlags=PSP_DEFAULT;
     pages[1].dwFlags=PSP_DEFAULT;
@@ -75,7 +72,6 @@ void DialogConfigMP(HINSTANCE g_hInst, HWND parent) {
     pages[3].dwFlags=PSP_DEFAULT;
     pages[4].dwFlags=PSP_DEFAULT;
 	pages[5].dwFlags=PSP_DEFAULT;
-	pages[6].dwFlags=PSP_DEFAULT;
 
     pages[0].pszTemplate=(LPCTSTR)IDD_OPTIONS1;
     pages[1].pszTemplate=(LPCTSTR)IDD_OPTIONS2;
@@ -83,7 +79,6 @@ void DialogConfigMP(HINSTANCE g_hInst, HWND parent) {
     pages[3].pszTemplate=(LPCTSTR)IDD_OPTIONS4;
     pages[4].pszTemplate=(LPCTSTR)IDD_STATUSY;
 	pages[5].pszTemplate=(LPCTSTR)IDD_OPTIONS5;
-	pages[6].pszTemplate=(LPCTSTR)IDD_CANSEL;
 
     pages[0].pfnDlgProc=DlgProcConfigP1;
     pages[1].pfnDlgProc=DlgProcConfigP2;
@@ -91,7 +86,6 @@ void DialogConfigMP(HINSTANCE g_hInst, HWND parent) {
     pages[3].pfnDlgProc=DlgProcConfigP4;
     pages[4].pfnDlgProc=DlgProcConfigP5;
 	pages[5].pfnDlgProc=DlgProcConfigP6;
-	pages[6].pfnDlgProc=DlgProcConfigP7;
 
     pages[0].lParam=0;
     pages[1].lParam=1;
@@ -99,7 +93,6 @@ void DialogConfigMP(HINSTANCE g_hInst, HWND parent) {
     pages[3].lParam=3;
     pages[4].lParam=4;
 	pages[5].lParam=5;
-	pages[6].lParam=6;
 
     PROPSHEETHEADER psh;
     psh.dwSize=sizeof(PROPSHEETHEADER);
@@ -107,7 +100,7 @@ void DialogConfigMP(HINSTANCE g_hInst, HWND parent) {
     psh.hwndParent=parent;
     psh.hInstance=g_hInst;
     psh.pszCaption=L"Options";
-    psh.nPages=7;
+    psh.nPages=6;
     psh.nStartPage=0;
     psh.ppsp=pages;
 	psh.pfnCallback = PropSheetCallback;
@@ -156,6 +149,16 @@ INT_PTR CALLBACK DlgProcConfig(HWND hDlg, UINT message, WPARAM wParam, LPARAM lP
             shidi.hDlg = hDlg;
             //SHInitDialog(&shidi);
 			
+			// MenuBar
+			SHMENUBARINFO mbi;
+			memset ( &mbi, 0, sizeof ( mbi ) );
+			mbi.cbSize = sizeof ( mbi );
+			mbi.hwndParent = hDlg;
+			mbi.nToolBarId = IDR_MENU_OK_CANCEL;
+			mbi.hInstRes = g_hInst;
+			mbi.dwFlags |= SHCMBF_HMENU;
+			SHCreateMenuBar ( &mbi );
+
 			//смотрим какие цветовые схемы есть в наличии
 			WIN32_FIND_DATA FindFileData;
 			HANDLE hFind;
@@ -415,14 +418,11 @@ INT_PTR CALLBACK DlgProcConfig(HWND hDlg, UINT message, WPARAM wParam, LPARAM lP
 
     case WM_COMMAND:
 
-        if (LOWORD(wParam) == IDCANCEL) {
-            return TRUE;
-        }
-		if (LOWORD(wParam) == ID_CANSEL) {
+		if (LOWORD(wParam) == IDCANCEL) {
         PostMessage(GetParent(hDlg), WM_COMMAND, IDCANCEL, 0);
 		return TRUE;
         }
-		if (LOWORD(wParam) == ID_OK) {
+		if (LOWORD(wParam) == IDOK) {
         PostMessage(GetParent(hDlg), WM_COMMAND, IDOK, 0);
 		return TRUE;
         }

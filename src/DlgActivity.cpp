@@ -61,6 +61,17 @@ INT_PTR CALLBACK DlgActivity::dialogProc(HWND hDlg, UINT message, WPARAM wParam,
 			shidi.dwFlags = SHIDIF_SIPDOWN | SHIDIF_SIZEDLGFULLSCREEN | SHIDIF_EMPTYMENU;
 			shidi.hDlg = hDlg;
 			SHInitDialog(&shidi);
+
+			// MenuBar
+			SHMENUBARINFO mbi;
+			memset ( &mbi, 0, sizeof ( mbi ) );
+			mbi.cbSize = sizeof ( mbi );
+			mbi.hwndParent = hDlg;
+			mbi.nToolBarId = IDR_MENU_OK_CANCEL;
+			mbi.hInstRes = g_hInst;
+			mbi.dwFlags |= SHCMBF_HMENU;
+			SHCreateMenuBar ( &mbi );
+
 std::wstring moodpatch=skinRootPath+TEXT("activity.txt");
     int linesCount;
 	
@@ -81,7 +92,7 @@ std::wstring moodpatch=skinRootPath+TEXT("activity.txt");
 	case WM_COMMAND:
       
 
-		if (LOWORD(wParam) == IDOK_1)
+		if (LOWORD(wParam) == IDOK)
 		{
 			int vybor_moods22=(int)SendDlgItemMessage(hDlg, IDC_ACTIV, CB_GETCURSEL, 0,0);
 			std::string pmessage;
@@ -123,7 +134,7 @@ p->rc->jabberStream->sendStanza(iq);
             delete p;
 			return TRUE;
 		}
-		if (LOWORD(wParam) == IDOK_3)
+		if (LOWORD(wParam) == IDCANCEL)
 		{
 			EndDialog(hDlg, LOWORD(wParam));
             delete p;

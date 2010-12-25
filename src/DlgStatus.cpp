@@ -27,8 +27,8 @@ void streamShutdown(ResourceContextRef rc);
 int initJabber(ResourceContextRef rc);
 
 wchar_t *statusNames []= { 
-    TEXT("Online"),         TEXT("Free for chat"),  TEXT("Away"), 
-    TEXT("Extended Away"),  TEXT("DND"),            TEXT("Offline") 
+    TEXT("В сети"),         TEXT("Готов болтать"),  TEXT("Отошел"), 
+    TEXT("Недоступен"),  TEXT("Не беспокоить"),            TEXT("Не в сети") 
 };
 
 
@@ -48,12 +48,22 @@ INT_PTR CALLBACK DlgStatus::dialogProc(HWND hDlg, UINT message, WPARAM wParam, L
 			shidi.hDlg = hDlg;
 			SHInitDialog(&shidi);
 
+			// MenuBar
+			SHMENUBARINFO mbi;
+			memset ( &mbi, 0, sizeof ( mbi ) );
+			mbi.cbSize = sizeof ( mbi );
+			mbi.hwndParent = hDlg;
+			mbi.nToolBarId = IDR_MENU_OK_CANCEL;
+			mbi.hInstRes = g_hInst;
+			mbi.dwFlags |= SHCMBF_HMENU;
+			SHCreateMenuBar ( &mbi );
+
             for (int i=0; i<6; i++)
                 SendDlgItemMessage(hDlg, IDC_C_STATUS, CB_ADDSTRING, 0, (LPARAM) statusNames[i]);
             SendDlgItemMessage(hDlg, IDC_C_STATUS, CB_SETCURSEL, p->rc->status, 0);
 
             if (p->contact) SetDlgItemText(hDlg, IDC_E_JID, p->contact->jid.getJid());
-			Serialize s(L"config\\status", Serialize::READ);
+			Serialize s(L"config\\status.bin", Serialize::READ);
 			s.streamString(p->rc->presenceMessage, "");
 			s.streamInt(p->rc->priority, 0);
             SetDlgItemText(hDlg, IDC_E_STATUS, p->rc->presenceMessage);
@@ -106,7 +116,7 @@ INT_PTR CALLBACK DlgStatus::dialogProc(HWND hDlg, UINT message, WPARAM wParam, L
                 } else {
                     initJabber(p->rc);
                 }
-				Serialize s(L"config\\status", Serialize::WRITE);
+				Serialize s(L"config\\status.bin", Serialize::WRITE);
 				s.streamString(pmessage, "");
 				s.streamInt(p->rc->priority, 0);
             }

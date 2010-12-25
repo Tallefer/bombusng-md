@@ -28,6 +28,8 @@
 #include <windows.h>
 #include <Wingdi.h>
 
+#include "DlgURL.h"
+
 extern int smile_aktiv;
 extern std::wstring appRootPath;
 extern HINSTANCE			g_hInst;
@@ -206,7 +208,70 @@ long WINAPI EditSubClassProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) 
 
 
     case WM_CHAR:
-        if (wParam==VK_RETURN && !editbox::editBoxShifts) {
+        if (wParam==VK_RETURN && !editbox::editBoxShifts)
+		{
+			SHRGINFO    shrg;
+            shrg.cbSize = sizeof(shrg);
+            shrg.hwndClient = hWnd;
+            shrg.ptDown.x = LOWORD(lParam);
+            shrg.ptDown.y = HIWORD(lParam);
+            shrg.dwFlags = SHRG_RETURNCMD | SHRG_NOANIMATION;
+
+			if (SHRecognizeGesture(&shrg) == GN_CONTEXTMENU)
+			{
+				DWORD sel=SendMessage(hWnd, EM_GETSEL, 0, 0);
+
+                UINT paste = (IsClipboardFormatAvailable(CF_UNICODETEXT))?  MF_STRING : MF_STRING | MF_GRAYED;
+                UINT cut = (LOWORD(sel)!=HIWORD(sel))? MF_STRING : MF_STRING | MF_GRAYED;
+                UINT undo= (SendMessage(hWnd, EM_CANUNDO, 0, 0))? MF_STRING : MF_STRING | MF_GRAYED;;
+                HMENU hmenu = CreatePopupMenu();
+                if (hmenu==NULL) break;
+                HMENU subscrMenupCom=CreatePopupMenu();//подменю команд
+				HMENU subscrMenupJUIC=CreatePopupMenu();
+				AppendMenu(subscrMenupJUIC, MF_STRING, 70000, TEXT("последние 10") );
+				AppendMenu(subscrMenupJUIC, MF_STRING, 70001, TEXT("последние 10 поп.") );
+				AppendMenu(subscrMenupJUIC, MF_STRING, 70002, TEXT("поп. теги") );
+				AppendMenu(subscrMenupJUIC, MF_STRING, 70003, TEXT("поп. блоги") );
+				AppendMenu(subscrMenupJUIC, MF_STRING, 70004, TEXT("удалить последний пост") );
+				AppendMenu(subscrMenupJUIC, MF_STRING, 70005, TEXT("логин") );
+				AppendMenu(subscrMenupJUIC, MF_STRING, 70006, TEXT("пинг") );
+				AppendMenu(subscrMenupJUIC, MF_STRING, 70007, TEXT("обн.инф. из vcard") );
+
+				if(linesCountcom)for(int r=0;r<linesCountcom;r=r+3)AppendMenu(subscrMenupCom, MF_STRING,r+40000 , utf8::utf8_wchar(strcom[r][1]).c_str());//добавляем все подпункты
+
+				//Собственно окно набора сообщения
+                AppendMenu(hmenu, (smileParser->hasSmiles())? MF_STRING : MF_STRING | MF_GRAYED, ADD_SMILE, TEXT("Смайлы"));
+				AppendMenu(hmenu, MF_POPUP, (LPARAM)subscrMenupCom, TEXT("Команды"));
+                AppendMenu(hmenu, MF_SEPARATOR, 0, NULL);
+				AppendMenu(hmenu, MF_POPUP, (LPARAM)subscrMenupJUIC, TEXT("juick"));
+				AppendMenu(hmenu, MF_SEPARATOR, 0, NULL);
+                AppendMenu(hmenu, cut, WM_CUT, TEXT("Вырезать") );
+                AppendMenu(hmenu, cut, WM_COPY, TEXT("Копировать") );
+                AppendMenu(hmenu, paste, WM_PASTE, TEXT("Вставить") );
+                AppendMenu(hmenu, undo, EM_UNDO, TEXT("Отмена") );
+				AppendMenu(hmenu, MF_STRING, CLEARME, TEXT("Очистить") );
+				AppendMenu(hmenu, MF_SEPARATOR, 0, NULL);
+				AppendMenu(hmenu, MF_STRING, SB_, TEXT("ТЕМА") );
+
+                POINT pt={LOWORD(lParam), HIWORD(lParam) };
+                ClientToScreen(hWnd, &pt);
+
+                int cmdId=TrackPopupMenuEx(hmenu,
+                    TPM_BOTTOMALIGN | TPM_RETURNCMD,
+                    pt.x, pt.y,
+                    hWnd,
+                    NULL);
+
+                if (cmdId==ADD_SMILE) PostMessage(GetParent(hWnd), WM_COMMAND, 8000, 0);//SmileBox::showSmileBox(hWnd, pt.x, pt.y, smileParser);
+				 if (cmdId==SB_)PostMessage(GetParent(hWnd), WM_COMMAND, IDC_SB, 0);
+                DestroyMenu(hmenu);
+				if(cmdId>=40000 && cmdId<=40000 +linesCountcom)PostMessage(GetParent(hWnd), COMMAND_STR, cmdId-40000, 0);
+                if(cmdId>=70000 && cmdId<=70007)PostMessage(GetParent(hWnd), JUICK_COMMAND, cmdId-70000, 0);
+				if (cmdId==CLEARME)PostMessage(GetParent(hWnd), WM_COMMAND, CLEARED, 0);
+				if (cmdId>0) PostMessage(hWnd, cmdId, 0, 0);
+
+                return 0;
+			}
             if (Config::getInstance()->enter2)
 			{
 				int ndx1 = 0, ndx2 = 0;
@@ -1224,14 +1289,15 @@ bool MessageElement::OnMenuCommand(int cmdId, HWND parent, HWND edithwnd){
 
      case GOTOURL:
 		 {
-
-				wchar_t *strurl=new wchar_t[wstr.length()+1];
+			 DialogURL * dlgURL = new DialogURL(wstr);
+			/*wchar_t *strurl=new wchar_t[wstr.length()+1];
 				wcscpy(strurl,wstr.c_str());
 				wchar_t *strurl2=new wchar_t[wstr.length()+1];
 
 
 					strurl=wcsstr(strurl,L"http://");
-			while(strurl!=NULL){
+			while(strurl!=NULL)
+			{
 
 				wcscpy(strurl2,strurl);
 				strurl2=wcstok(strurl2,L" \n;\,<>*\"\'\[\]\{\}");
@@ -1256,9 +1322,9 @@ bool MessageElement::OnMenuCommand(int cmdId, HWND parent, HWND edithwnd){
 			}
 				delete[] strurl;
 				delete[] strurl2;
-                return true;
+                return true;*/
 		 }
-
+		return TRUE;
 		 case JUICK_COM_K:
 			 {std::wstring copy=wstr;
                 // striping formating

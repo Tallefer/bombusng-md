@@ -41,6 +41,16 @@ INT_PTR CALLBACK DlglocContact::dialogProc(HWND hDlg, UINT message, WPARAM wPara
 			shidi.hDlg = hDlg;
 			SHInitDialog(&shidi);
 
+			// MenuBar
+			SHMENUBARINFO mbi;
+			memset ( &mbi, 0, sizeof ( mbi ) );
+			mbi.cbSize = sizeof ( mbi );
+			mbi.hwndParent = hDlg;
+			mbi.nToolBarId = IDR_MENU_OK_CANCEL;
+			mbi.hInstRes = g_hInst;
+			mbi.dwFlags |= SHCMBF_HMENU;
+			SHCreateMenuBar ( &mbi );
+
             if (p->contact) { 
                 SetDlgItemText(hDlg, IDC_E_JID2, p->contact->rosterJid);
 
@@ -78,7 +88,7 @@ p->rc->jabberStream->sendStanza(messageloc);
             delete p;
 			return TRUE;
 		}
-		if (LOWORD(wParam) == IDOK3)
+		if (LOWORD(wParam) == IDCANCEL)
 		{
 			EndDialog(hDlg, LOWORD(wParam));
             delete p;

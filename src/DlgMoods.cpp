@@ -40,6 +40,17 @@ INT_PTR CALLBACK DlgMoods::dialogProc(HWND hDlg, UINT message, WPARAM wParam, LP
 			shidi.dwFlags = SHIDIF_SIPDOWN | SHIDIF_SIZEDLGFULLSCREEN | SHIDIF_EMPTYMENU;
 			shidi.hDlg = hDlg;
 			SHInitDialog(&shidi);
+
+			// MenuBar
+			SHMENUBARINFO mbi;
+			memset ( &mbi, 0, sizeof ( mbi ) );
+			mbi.cbSize = sizeof ( mbi );
+			mbi.hwndParent = hDlg;
+			mbi.nToolBarId = IDR_MENU_OK_CANCEL;
+			mbi.hInstRes = g_hInst;
+			mbi.dwFlags |= SHCMBF_HMENU;
+			SHCreateMenuBar ( &mbi );
+
 std::wstring moodpatch=skinRootPath+TEXT("moods.txt");
     int linesCount;
 	
@@ -100,7 +111,7 @@ p->rc->jabberStream->sendStanza(iq);
             delete p;
 			return TRUE;
 		}
-		if (LOWORD(wParam) == IDOK3)
+		if (LOWORD(wParam) == IDCANCEL)
 		{
 			EndDialog(hDlg, LOWORD(wParam));
             delete p;

@@ -165,12 +165,12 @@ void createMenus(HWND hWnd)
 
 	root->addItem(L"Статус",icons_menu::ICON_STATUS,0,IDM_JABBER_STATUS);
 	Menu* popup_status = root->addMenu(L"Быстро статус",icons_menu::ICON_STATUS_BR);
-			popup_status->addItem(L"On line",icons_menu::ICON_STATUS_BR_ONLINE,0,IDM_STATUS_ONLINE);
-			popup_status->addItem(L"Чат",icons_menu::ICON_STATUS_BR_FFC,0,IDM_STATUS_FFC);
+			popup_status->addItem(L"В сети",icons_menu::ICON_STATUS_BR_ONLINE,0,IDM_STATUS_ONLINE);
+			popup_status->addItem(L"Готов болтать",icons_menu::ICON_STATUS_BR_FFC,0,IDM_STATUS_FFC);
 			popup_status->addItem(L"Отошёл",icons_menu::ICON_STATUS_BR_AWEY,0,IDM_STATUS_AWAY);
-			popup_status->addItem(L"Давно отошёл",icons_menu::ICON_STATUS_BR_EXAWEY,0,IDM_STATUS_EXTENDEDAWAY);
+			popup_status->addItem(L"Недоступен",icons_menu::ICON_STATUS_BR_EXAWEY,0,IDM_STATUS_EXTENDEDAWAY);
 			popup_status->addItem(L"Не беспокоить",icons_menu::ICON_STATUS_BR_DND,0,IDM_STATUS_DND);
-			popup_status->addItem(L"Off line",icons_menu::ICON_STATUS_BR_OFFLINE,0,IDM_STATUS_OFFLINE);
+			popup_status->addItem(L"Не в сети",icons_menu::ICON_STATUS_BR_OFFLINE,0,IDM_STATUS_OFFLINE);
 	Menu* pep = root->addMenu(L"PEP статус",icons_menu::ICON_PEP_STATUS);
 			pep->addItem(L"Настроение",icons_menu::ICON_PEP_N,0,MOODS_AKTIV);
 			pep->addItem(L"Активность",icons_menu::ICON_PEP_A,0,AKTIV_PEP);
@@ -188,9 +188,9 @@ void createMenus(HWND hWnd)
 			instr->addItem(L"Трафик",icons_menu::ICON_TRAF,0,IDM_JABBER_STREAMINFO);
 	root->addSeparator();
 	Menu* signals = root->addMenu(L"Сигналы",icons_menu::ICON_SIGN);
-			signals->addItem(L"Звук+вибра",icons_menu::ICON_SIGN  ,0,ID_SIGNALS_SOUNDANDVIBRA)->check(true);
+			signals->addItem(L"Звук и вибрация",icons_menu::ICON_SIGN  ,0,ID_SIGNALS_SOUNDANDVIBRA)->check(true);
 			signals->addItem(L"Звук",      icons_menu::ICON_SIGN_S,0,ID_SIGNALS_SOUND);
-			signals->addItem(L"Вибра",     icons_menu::ICON_SIGN_V,0,ID_SIGNALS_VIBRA);
+			signals->addItem(L"Вибрация",     icons_menu::ICON_SIGN_V,0,ID_SIGNALS_VIBRA);
 			signals->addItem(L"Отключить", icons_menu::ICON_SIGN_MUTE,0,ID_SIGNALS_MUTE);
 	root->addItem(L"Настройки",icons_menu::ICON_OPTIONS,0,ID_JABBER_OPTIONS);
 	root->addSeparator();
@@ -720,7 +720,13 @@ hwnvs=mainWnd;
     return TRUE;
 }
 
-
+void CheckSignalsMenuItems(HMENU hMenu)
+{
+	CheckMenuItem (hMenu, ID_SIGNALS_SOUNDANDVIBRA, (Config::getInstance()->sounds && Config::getInstance()->vibra) ? MF_CHECKED : MF_UNCHECKED| MF_BYCOMMAND);
+	CheckMenuItem (hMenu, ID_SIGNALS_SOUND,(Config::getInstance()->sounds && !Config::getInstance()->vibra) ? MF_CHECKED : MF_UNCHECKED| MF_BYCOMMAND);
+	CheckMenuItem (hMenu, ID_SIGNALS_VIBRA,(!Config::getInstance()->sounds && Config::getInstance()->vibra) ? MF_CHECKED : MF_UNCHECKED| MF_BYCOMMAND);
+	CheckMenuItem (hMenu, ID_SIGNALS_MUTE,(!Config::getInstance()->sounds && !Config::getInstance()->vibra) ? MF_CHECKED : MF_UNCHECKED| MF_BYCOMMAND);
+}
 ////////////////////////////////////////////////////////////////////////////////
 //  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
 //
@@ -745,6 +751,7 @@ int cmd2;
 RECT rcMenuBar;
 //MENUITEMINFO mi;
 HMENU hMenu = (HMENU)SHMenuBar_GetMenu(g_hWndMenuBar, 0);
+CheckSignalsMenuItems(hMenu);
     static SHACTIVATEINFO s_sai;
 	Serialize s(L"config\\status", Serialize::READ);
     switch (message) 
@@ -901,45 +908,26 @@ HMENU hMenu = (HMENU)SHMenuBar_GetMenu(g_hWndMenuBar, 0);
 
 
 				case ID_SIGNALS_SOUNDANDVIBRA:
-					   
-					
-
-				CheckMenuItem (hMenu, ID_SIGNALS_SOUNDANDVIBRA,MF_CHECKED| MF_BYCOMMAND);
-				CheckMenuItem (hMenu, ID_SIGNALS_SOUND,MF_UNCHECKED| MF_BYCOMMAND);
-				CheckMenuItem (hMenu, ID_SIGNALS_VIBRA,MF_UNCHECKED| MF_BYCOMMAND);
-				CheckMenuItem (hMenu, ID_SIGNALS_MUTE,MF_UNCHECKED| MF_BYCOMMAND);
-				DrawMenuBar(mainWnd);
-						Config::getInstance()->sounds = true;	
-						Config::getInstance()->vibra = true;
+					DrawMenuBar(mainWnd);
+					Config::getInstance()->sounds = true;	
+					Config::getInstance()->vibra = true;
 					break;
 				
 				case ID_SIGNALS_SOUND:
-				CheckMenuItem (hMenu, ID_SIGNALS_SOUNDANDVIBRA,MF_UNCHECKED| MF_BYCOMMAND);
-				CheckMenuItem (hMenu, ID_SIGNALS_SOUND,MF_CHECKED| MF_BYCOMMAND);
-				CheckMenuItem (hMenu, ID_SIGNALS_VIBRA,MF_UNCHECKED| MF_BYCOMMAND);
-				CheckMenuItem (hMenu, ID_SIGNALS_MUTE,MF_UNCHECKED| MF_BYCOMMAND);
-				DrawMenuBar(mainWnd);
-						Config::getInstance()->sounds = true;	
-						Config::getInstance()->vibra = false;
+					DrawMenuBar(mainWnd);
+					Config::getInstance()->sounds = true;	
+					Config::getInstance()->vibra = false;
 					break;
 
 				case ID_SIGNALS_VIBRA:
-				CheckMenuItem (hMenu, ID_SIGNALS_SOUNDANDVIBRA,MF_UNCHECKED| MF_BYCOMMAND);
-				CheckMenuItem (hMenu, ID_SIGNALS_SOUND,MF_UNCHECKED| MF_BYCOMMAND);
-				CheckMenuItem (hMenu, ID_SIGNALS_VIBRA,MF_CHECKED| MF_BYCOMMAND);
-				CheckMenuItem (hMenu, ID_SIGNALS_MUTE,MF_UNCHECKED| MF_BYCOMMAND);
-				DrawMenuBar(mainWnd);
-						Config::getInstance()->sounds = false;	
-						Config::getInstance()->vibra = true;						
+					DrawMenuBar(mainWnd);
+					Config::getInstance()->sounds = false;	
+					Config::getInstance()->vibra = true;						
 					break;
 
 				case ID_SIGNALS_MUTE:
-				CheckMenuItem (hMenu, ID_SIGNALS_SOUNDANDVIBRA,MF_UNCHECKED| MF_BYCOMMAND);
-				CheckMenuItem (hMenu, ID_SIGNALS_SOUND,MF_UNCHECKED| MF_BYCOMMAND);
-				CheckMenuItem (hMenu, ID_SIGNALS_VIBRA,MF_UNCHECKED| MF_BYCOMMAND);
-				CheckMenuItem (hMenu, ID_SIGNALS_MUTE,MF_CHECKED| MF_BYCOMMAND);
-						Config::getInstance()->sounds = false;	
-						Config::getInstance()->vibra = false;						
+					Config::getInstance()->sounds = false;	
+					Config::getInstance()->vibra = false;						
 					break;
                 case ID_JABBER_JOINCONFERENCE:
                     if (rc->isLoggedIn())

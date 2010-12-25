@@ -13,6 +13,7 @@
 #define IDS_EXIT                        103
 #define IDR_MENU1                       103
 #define IDS_HELP                        104
+#define IDR_MENU_OK_CANCEL              104
 #define IDD_ABOUTBOX                    105
 #define IDS_SEND                        107
 #define IDD_STATUS                      107
@@ -49,7 +50,8 @@
 #define IDD_HISTOR                      140
 #define IDD_ACTIVITY                    141
 #define IDD_OPTIONS5                    142
-#define IDD_CANSEL                      143
+#define IDD_DIALOG1                     143
+#define IDD_OPEN_URL                    143
 #define IDC_STATIC_2                    202
 #define IDC_STATIC_3                    203
 #define IDC_STATIC_4                    204
@@ -138,6 +140,7 @@
 #define IDC_AVTOSTATUS_MESS             1058
 #define IDC_ID_AVTOSTATUS               1059
 #define IDC_LIST1                       1060
+#define IDC_URL_LIST                    1060
 #define IDC_X_HIS_MUCD                  1061
 #define IDC_E_JID2                      1062
 #define IDC_X_HIS_MUCD2                 1062
@@ -166,9 +169,7 @@
 #define IDC_G_MENU_TOLSH                1084
 #define IDC_G_MENU_HEIGHT               1085
 #define IDC_G_MENU_WIDTH                1086
-#define ID_CANSEL                       1087
 #define ID_CANSEL2                      1088
-#define ID_OK                           1088
 #define IDC_AHW                         1095
 #define IDC_X_HISTORY                   1098
 #define IDC_X_SIP                       1099
@@ -273,14 +274,13 @@
 #define JUICK_NUM_U                     42373
 #define MSGListFocus                    42374
 #define MENU_IT1                        42375
-#define IDC_STATIC                      -1
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        140
+#define _APS_NEXT_RESOURCE_VALUE        144
 #define _APS_NEXT_COMMAND_VALUE         32831
 #define _APS_NEXT_CONTROL_VALUE         1088
 #define _APS_NEXT_SYMED_VALUE           116

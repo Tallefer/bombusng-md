@@ -16,6 +16,7 @@
 #include "stringutils.h"
 
 static JabberAccountRef dlgAccountParam;
+extern HINSTANCE	g_hInst;			// current instance
 
 void DlgAccountItemStates(HWND hDlg) {
     int state=IsDlgButtonChecked(hDlg, IDC_X_NSRV);
@@ -34,9 +35,7 @@ INT_PTR CALLBACK DlgProcAccountP2(HWND hDlg, UINT message, WPARAM wParam, LPARAM
 INT_PTR CALLBACK DlgProcAccountP3(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
     return DlgProcAccount(hDlg, message, wParam, lParam, 2);
 }
-INT_PTR CALLBACK DlgProcAccountP4(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
-    return DlgProcAccount(hDlg, message, wParam, lParam, 3);
-}
+
 void DialogAccountMP(HINSTANCE g_hInst, HWND parent, JabberAccountRef accnt) {
     dlgAccountParam=accnt;
 
@@ -44,32 +43,26 @@ void DialogAccountMP(HINSTANCE g_hInst, HWND parent, JabberAccountRef accnt) {
     pages[0].dwSize=sizeof(PROPSHEETPAGE);
     pages[1].dwSize=sizeof(PROPSHEETPAGE);
     pages[2].dwSize=sizeof(PROPSHEETPAGE);
-	pages[3].dwSize=sizeof(PROPSHEETPAGE);
 
     pages[0].hInstance=g_hInst;
     pages[1].hInstance=g_hInst;
     pages[2].hInstance=g_hInst;
-	pages[3].hInstance=g_hInst;
 
     pages[0].dwFlags=PSP_DEFAULT;
     pages[1].dwFlags=PSP_DEFAULT;
     pages[2].dwFlags=PSP_DEFAULT;
-	pages[3].dwFlags=PSP_DEFAULT;
 
     pages[0].pszTemplate=(LPCTSTR)IDD_ACCNT1;
     pages[1].pszTemplate=(LPCTSTR)IDD_ACCNT2;
     pages[2].pszTemplate=(LPCTSTR)IDD_ACCNT3;
-	pages[3].pszTemplate=(LPCTSTR)IDD_CANSEL;
 
     pages[0].pfnDlgProc=DlgProcAccountP1;
     pages[1].pfnDlgProc=DlgProcAccountP2;
     pages[2].pfnDlgProc=DlgProcAccountP3;
-	pages[3].pfnDlgProc=DlgProcAccountP4;
 
     pages[0].lParam=0;
     pages[1].lParam=1;
     pages[2].lParam=2;
-	pages[3].lParam=3;
 
     PROPSHEETHEADER psh;
     psh.dwSize=sizeof(PROPSHEETHEADER);
@@ -77,7 +70,7 @@ void DialogAccountMP(HINSTANCE g_hInst, HWND parent, JabberAccountRef accnt) {
     psh.hwndParent=parent;
     psh.hInstance=g_hInst;
     psh.pszCaption=L"Account";
-    psh.nPages=4;
+    psh.nPages=3;
     psh.nStartPage=0;
     psh.ppsp=pages;
 	psh.pfnCallback = PropSheetCallback;
@@ -98,6 +91,16 @@ INT_PTR CALLBACK DlgProcAccount(HWND hDlg, UINT message, WPARAM wParam, LPARAM l
             shidi.dwFlags = SHIDIF_SIPDOWN | SHIDIF_SIZEDLGFULLSCREEN | SHIDIF_EMPTYMENU;
             shidi.hDlg = hDlg;
             //SHInitDialog(&shidi);
+	
+			// MenuBar
+			SHMENUBARINFO mbi;
+			memset ( &mbi, 0, sizeof ( mbi ) );
+			mbi.cbSize = sizeof ( mbi );
+			mbi.hwndParent = hDlg;
+			mbi.nToolBarId = IDR_MENU_OK_CANCEL;
+			mbi.hInstRes = g_hInst;
+			mbi.dwFlags |= SHCMBF_HMENU;
+			SHCreateMenuBar ( &mbi );
 
             if (npage==0) {
                 SetDlgItemText(hDlg, IDC_E_JID, dlgAccountParam->getBareJid());
@@ -170,14 +173,11 @@ INT_PTR CALLBACK DlgProcAccount(HWND hDlg, UINT message, WPARAM wParam, LPARAM l
                 DlgAccountItemStates(hDlg);
         }
 
-        if (LOWORD(wParam) == IDCANCEL) {
-            return TRUE;
-        }
-		if (LOWORD(wParam) == ID_CANSEL) {
+		if (LOWORD(wParam) == IDCANCEL) {
         PostMessage(GetParent(hDlg), WM_COMMAND, IDCANCEL, 0);
 		return TRUE;
         }
-		if (LOWORD(wParam) == ID_OK) {
+		if (LOWORD(wParam) == IDOK) {
         PostMessage(GetParent(hDlg), WM_COMMAND, IDOK, 0);
 		return TRUE;
         }

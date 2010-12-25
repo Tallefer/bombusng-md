@@ -478,6 +478,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\DlgURL.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\DlgUtils.cpp"
 				>
 			</File>
@@ -801,6 +805,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\DlgStatus.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\DlgURL.h"
 				>
 			</File>
 			<File
