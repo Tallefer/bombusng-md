@@ -40,3 +40,4 @@ none
 http://vacuum-im.googlecode.com
 http://2010.qip.ru/caps
 http://trillian.im/caps
+http://pyvk-t

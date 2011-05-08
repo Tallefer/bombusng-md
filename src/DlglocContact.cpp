@@ -64,7 +64,16 @@ INT_PTR CALLBACK DlglocContact::dialogProc(HWND hDlg, UINT message, WPARAM wPara
 		return (INT_PTR)TRUE;
 
 	case WM_COMMAND:
-      
+		if (LOWORD(wParam) == SET_DOLGOTA)
+	  {
+	  SetDlgItemText(hDlg, IDC_E_DOL, (LPCWSTR)lParam);
+	  }
+
+      if (LOWORD(wParam) == SET_SHIR)
+	  {
+	  SetDlgItemText(hDlg, IDC_E_SHIR, (LPCWSTR)lParam);
+	  }
+	  
 
 		if (LOWORD(wParam) == IDOK)
 		{

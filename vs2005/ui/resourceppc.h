@@ -274,6 +274,8 @@
 #define JUICK_NUM_U                     42373
 #define MSGListFocus                    42374
 #define MENU_IT1                        42375
+#define SET_SHIR                        42376
+#define SET_DOLGOTA                     42377
 
 // Next default values for new objects
 // 
